@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Mail, Phone, Trash } from "lucide-react"
 import { getContactMessages as getContacts } from "@/lib/db/queries"
 
+export const dynamic = "force-dynamic"
+
 export default async function AdminContactsPage() {
   const contacts = await getContacts()
 

@@ -5,6 +5,8 @@ import { Plus, Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { getArticles } from "@/lib/db/queries"
 
+export const dynamic = "force-dynamic"
+
 export default async function AdminArticlesPage() {
   const articles = await getArticles()
 

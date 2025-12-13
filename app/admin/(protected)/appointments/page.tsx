@@ -5,6 +5,8 @@ import { Calendar, Clock, Mail, Phone, Trash } from "lucide-react"
 import { getAppointments } from "@/lib/db/queries"
 import { DeleteAppointmentButton } from "@/components/admin/delete-appointment-button"
 
+export const dynamic = "force-dynamic"
+
 export default async function AdminAppointmentsPage() {
   const appointments = await getAppointments()
 

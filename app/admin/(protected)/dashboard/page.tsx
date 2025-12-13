@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FileText, Calendar, Mail, TrendingUp } from "lucide-react"
 import { getArticles, getAppointments, getContactMessages } from "@/lib/db/queries"
 
+export const dynamic = "force-dynamic"
+
 async function getDashboardStats() {
   const [articles, appointments, contacts] = await Promise.all([
     getArticles(),
