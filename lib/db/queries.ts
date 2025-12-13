@@ -53,17 +53,32 @@ type ContactMessage = {
 }
 
 export async function getArticles(): Promise<Article[]> {
-  const supabase = getAdminClient()
-  const { data, error } = await supabase
-    .from("articles")
-    .select("*")
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false, nullsFirst: false })
-  if (error) {
-    console.error("Supabase getArticles error:", error)
+  try {
+    const supabase = getAdminClient()
+    const { data, error } = await supabase
+      .from("articles")
+      .select("*")
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false, nullsFirst: false })
+    if (error) {
+      // Hata detaylarını daha okunur şekilde yazdır
+      console.error("Supabase getArticles error:", {
+        message: (error as any)?.message,
+        code: (error as any)?.code,
+        details: (error as any)?.details,
+        hint: (error as any)?.hint,
+        raw: JSON.stringify(error),
+      })
+      return []
+    }
+    return (data as any) || []
+  } catch (err) {
+    console.error("Supabase getArticles exception:", {
+      message: (err as any)?.message,
+      stack: (err as any)?.stack,
+    })
     return []
   }
-  return (data as any) || []
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
