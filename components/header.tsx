@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X, User } from "lucide-react"
 import { useState } from "react"
@@ -18,13 +17,13 @@ export function Header() {
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
         <Link href="/" className="inline-block" onClick={(e) => { if (pathname === "/") { e.preventDefault(); router.refresh() } }}>
-  <Image
+  <img
     src="/tas_hukuk_logo.png"
     alt="Taş Hukuk Logo"
     width={100}
     height={100}
-    priority
     className="w-40 md:w-48 h-auto object-contain"
+    loading="eager"
   />
 </Link>
 

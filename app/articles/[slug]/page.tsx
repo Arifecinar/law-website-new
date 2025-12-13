@@ -4,25 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Calendar, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { getArticleBySlug } from "@/lib/db/queries"
 
-async function getArticle(slug: string) {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/articles/${slug}`,
-      {
-        cache: "no-store",
-      },
-    )
-    if (!response.ok) return null
-    return response.json()
-  } catch (error) {
-    console.error("Failed to fetch article:", error)
-    return null
-  }
-}
+export const revalidate = 60
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const article = await getArticle(params.slug)
+  const article = await getArticleBySlug(params.slug)
 
   if (!article) {
     notFound()

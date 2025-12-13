@@ -2,8 +2,9 @@ import { NextResponse } from "next/server"
 
 const ADMIN_COOKIE = "admin_session"
 
-export async function POST() {
-  const res = NextResponse.redirect(new URL("/admin/login", process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"))
+export async function POST(request: Request) {
+  const origin = new URL(request.url).origin
+  const res = NextResponse.redirect(new URL("/admin/login", origin))
   res.cookies.set(ADMIN_COOKIE, "", {
     httpOnly: true,
     sameSite: "lax",

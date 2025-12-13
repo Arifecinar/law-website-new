@@ -4,19 +4,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
+import { getArticles } from "@/lib/db/queries"
 
-async function getArticles() {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/api/articles`, {
-      cache: "no-store",
-    })
-    if (!response.ok) return []
-    return response.json()
-  } catch (error) {
-    console.error("Failed to fetch articles:", error)
-    return []
-  }
-}
+export const revalidate = 60
 
 export default async function ArticlesPage() {
   const articles = await getArticles()
