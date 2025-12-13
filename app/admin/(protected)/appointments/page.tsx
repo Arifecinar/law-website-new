@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, Mail, Phone, Trash } from "lucide-react"
 import { getAppointments } from "@/lib/db/queries"
+import { DeleteAppointmentButton } from "@/components/admin/delete-appointment-button"
 
 export default async function AdminAppointmentsPage() {
   const appointments = await getAppointments()
@@ -64,33 +65,21 @@ export default async function AdminAppointmentsPage() {
                             Reddet
                           </Button>
                         </form>
-                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
-                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
-                            <Trash size={16} />
-                          </Button>
-                        </form>
+                        <DeleteAppointmentButton id={appointment.id} />
                       </div>
                     ) : appointment.status === "confirmed" ? (
                       <div className="flex items-center gap-2">
                         <div className="px-3 py-1 rounded bg-green-100 text-green-800 text-sm font-medium border border-green-200">
                           Onaylandı
                         </div>
-                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
-                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
-                            <Trash size={16} />
-                          </Button>
-                        </form>
+                        <DeleteAppointmentButton id={appointment.id} />
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
                         <div className="px-3 py-1 rounded bg-red-100 text-red-800 text-sm font-medium border border-red-200">
                           Reddedildi
                         </div>
-                        <form action={`/api/admin/appointments/${appointment.id}/delete`} method="POST">
-                          <Button type="submit" variant="ghost" size="icon" title="Sil" aria-label="Sil">
-                            <Trash size={16} />
-                          </Button>
-                        </form>
+                        <DeleteAppointmentButton id={appointment.id} />
                       </div>
                     )}
                   </div>
