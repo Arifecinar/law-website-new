@@ -8,6 +8,8 @@ import Image from "next/image"
 import { Suspense } from "react"
 import { getArticles } from "@/lib/db/queries"
 
+export const revalidate = 60
+
 export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col">
