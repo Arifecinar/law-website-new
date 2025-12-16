@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   name: "Av. Kadir Taş",
   title: "Av. Kadir Taş - Hukuk Bürosu",
   description: "Profesyonel hukuki danışmanlık ve dava takibi hizmetleri",
-  phone: "+90 (552) 821 17 17",
+  phone: "+90 535 400 00 55",
   email: "info@avkadirtas.com",
   address: "Kağıthane/İSTANBUL",
   socialMedia: {
