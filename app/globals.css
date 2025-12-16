@@ -173,8 +173,8 @@
   bottom: 20px;
   z-index: 9999;
 
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
 
   background: #25D366;
   border-radius: 50%;
@@ -185,10 +185,11 @@
 
   box-shadow: 0 10px 30px rgba(0,0,0,.25);
   cursor: pointer;
+  animation: wa-pulse 1600ms ease-in-out infinite;
 }
 .wa-btn img{
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 }
 .wa-tooltip{
   position: absolute;
@@ -214,59 +215,26 @@
 }
 @media (max-width: 768px){
   .wa-btn{
-    bottom: 80px;
+    bottom: 28px;
+    width: 56px;
+    height: 56px;
   }
+  .wa-btn img{ width: 28px; height: 28px; }
   .wa-tooltip{
     display: none;
   }
 }
 
 /* Call button (global) */
-.call-btn{
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  z-index: 9999;
+/* (call button removed on request) */
 
-  width: 56px;
-  height: 56px;
-
-  background: #1f2937;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,.25);
-  cursor: pointer;
+/* WhatsApp pulse animation (gentle scale + shadow) */
+@keyframes wa-pulse {
+  0%   { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  50%  { transform: scale(1.08); box-shadow: 0 12px 34px rgba(0,0,0,.3); }
+  100% { transform: scale(1); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
 }
-.call-tooltip{
-  position: absolute;
-  left: 68px;
 
-  background: #111;
-  color: #fff;
-  font-size: 14px;
-  padding: 8px 12px;
-  border-radius: 8px;
-
-  white-space: nowrap;
-
-  opacity: 0;
-  transform: translateY(5px);
-  transition: all .2s ease;
-  pointer-events: none;
-}
-.call-btn:hover .call-tooltip{
-  opacity: 1;
-  transform: translateY(0);
-}
-@media (max-width: 768px){
-  .call-btn{
-    bottom: 80px;
-  }
-  .call-tooltip{
-    display: none;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .wa-btn { animation: none !important; }
 }
