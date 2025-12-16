@@ -165,3 +165,108 @@
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
 .delay-400 { animation-delay: 400ms; }
+
+/* WhatsApp button (global) */
+.wa-btn{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+
+  width: 56px;
+  height: 56px;
+
+  background: #25D366;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+.wa-btn img{
+  width: 28px;
+  height: 28px;
+}
+.wa-tooltip{
+  position: absolute;
+  right: 68px;
+
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all .2s ease;
+
+  pointer-events: none;
+}
+.wa-btn:hover .wa-tooltip{
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 768px){
+  .wa-btn{
+    bottom: 80px;
+  }
+  .wa-tooltip{
+    display: none;
+  }
+}
+
+/* Call button (global) */
+.call-btn{
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 9999;
+
+  width: 56px;
+  height: 56px;
+
+  background: #1f2937;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  cursor: pointer;
+}
+.call-tooltip{
+  position: absolute;
+  left: 68px;
+
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 8px;
+
+  white-space: nowrap;
+
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all .2s ease;
+  pointer-events: none;
+}
+.call-btn:hover .call-tooltip{
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 768px){
+  .call-btn{
+    bottom: 80px;
+  }
+  .call-tooltip{
+    display: none;
+  }
+}

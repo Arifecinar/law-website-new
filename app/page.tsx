@@ -39,7 +39,7 @@ export default function HomePage() {
       </div>
 
       <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-semibold text-white text-balance leading-[1.05] tracking-tight animate-fade-in-up delay-100 drop-shadow-2xl">
-        Haklarınızı En İyi Şekilde Korumanın Etkili Çözümler
+        Haklarınızı En İyi Şekilde Korumanın Etkili Çözümleri
       </h1>
 
       <p className="text-lg md:text-xl lg:text-2xl text-white/90 text-pretty leading-relaxed max-w-3xl mx-auto animate-fade-in-up delay-200 drop-shadow-md mt-4">
@@ -76,37 +76,7 @@ export default function HomePage() {
 </section>
 
 
-      <section className="py-16 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary opacity-90" />
-        <div className="container mx-auto px-4 lg:px-8 relative">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            <div className="text-center space-y-3">
-              <div className="text-5xl lg:text-6xl font-serif font-semibold">15+</div>
-              <div className="text-sm text-primary-foreground/90 uppercase tracking-wider font-medium">
-                Yıllık Deneyim
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="text-5xl lg:text-6xl font-serif font-semibold">350+</div>
-              <div className="text-sm text-primary-foreground/90 uppercase tracking-wider font-medium">
-                Başarılı Dava
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="text-5xl lg:text-6xl font-serif font-semibold">95%</div>
-              <div className="text-sm text-primary-foreground/90 uppercase tracking-wider font-medium">
-                Müvekkil Memnuniyeti
-              </div>
-            </div>
-            <div className="text-center space-y-3">
-              <div className="text-5xl lg:text-6xl font-serif font-semibold">7/24</div>
-              <div className="text-sm text-primary-foreground/90 uppercase tracking-wider font-medium">
-                Destek Hizmeti
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Son Makaleler */}
       <section className="py-16 lg:py-24">

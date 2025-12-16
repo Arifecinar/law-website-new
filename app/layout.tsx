@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Playfair_Display, Lora } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
+import { FloatingContact } from "@/components/floating-contact"
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -61,6 +62,7 @@ export default function RootLayout({
     <html lang="tr">
       <body className={`${lora.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
+        <FloatingContact />
         {process.env.NODE_ENV === "production" ? <Analytics /> : null}
       </body>
     </html>
