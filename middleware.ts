@@ -6,7 +6,12 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow admin login page and assets
-  if (pathname === "/admin/login" || pathname.startsWith("/_next") || pathname.startsWith("/public")) {
+  if (
+    pathname === "/admin/login" ||
+    pathname === "/api/admin/login" ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/public")
+  ) {
     return NextResponse.next()
   }
 
