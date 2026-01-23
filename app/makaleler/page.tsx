@@ -9,16 +9,19 @@ import Image from "next/image"
 import { getArticles, getCategories } from "@/lib/db/queries"
 import type { Metadata } from "next"
 
+// Canonical domain - www yok, https var
+const CANONICAL_BASE = "https://taslawfirm.com.tr"
+
 export const metadata: Metadata = {
   title: "Makaleler",
   description:
     "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
-  keywords: ["hukuk makaleleri", "hukuki bilgi", "avukat yazıları", "hukuk haberleri", "yasal mevzuat"],
+  keywords: ["hukuk makaleleri", "hukuki bilgi", "avukat yazıları", "hukuk haberleri", "yasal mevzuat", "İzmir avukat"],
   alternates: {
-    canonical: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/makaleler",
+    canonical: `${CANONICAL_BASE}/makaleler`,
     languages: {
-      "tr-TR": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/makaleler",
-      "en-US": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/articles",
+      "tr-TR": `${CANONICAL_BASE}/makaleler`,
+      "en-US": `${CANONICAL_BASE}/articles`,
     },
   },
   openGraph: {

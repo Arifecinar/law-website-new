@@ -6,7 +6,9 @@ import "./globals.css"
 import { FloatingContact } from "@/components/floating-contact"
 import { SITE_CONFIG } from "@/lib/constants"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+// Canonical domain - www yok, https var (SEO için kritik)
+const CANONICAL_BASE = "https://taslawfirm.com.tr"
+const siteUrl = CANONICAL_BASE
 
 const verificationMeta: Metadata["verification"] = {
   ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
@@ -35,7 +37,7 @@ const lora = Lora({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(CANONICAL_BASE),
   title: {
     default: "Taş Hukuk & Danışmanlık | İzmir Avukatlık ve Hukuki Danışmanlık",
     template: "%s | İzmir Avukatlık ve Hukuki Danışmanlık",
@@ -44,7 +46,7 @@ export const metadata: Metadata = {
     icon: "/favicon.png",
   },
   description:
-    "Taş Hukuk & Danışmanlık; iş, ceza, gayrimenkul, miras ve ticaret hukuku alanlarında İzmir’de profesyonel avukatlık ve hukuki danışmanlık hizmetleri sunar.",
+    "Taş Hukuk & Danışmanlık; iş, ceza, gayrimenkul, miras ve ticaret hukuku alanlarında İzmir'de profesyonel avukatlık ve hukuki danışmanlık hizmetleri sunar.",
   keywords: [
     "avukat",
     "hukuk",
@@ -54,7 +56,14 @@ export const metadata: Metadata = {
     "gayrimenkul hukuku",
     "ticaret hukuku",
     "miras hukuku",
+    "İzmir avukat",
+    "hukuk bürosu",
+    "Kadir Taş",
   ],
+  // Canonical URL - SEO için kritik
+  alternates: {
+    canonical: CANONICAL_BASE,
+  },
   openGraph: {
     title: "Taş Hukuk & Danışmanlık",
     description:
@@ -105,11 +114,11 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LegalService",
               name: SITE_CONFIG.name,
-              url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+              url: CANONICAL_BASE,
               telephone: SITE_CONFIG.phone,
               email: SITE_CONFIG.email,
-              image: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/law-firm-hero-image.jpg`,
-              logo: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/tas_hukuk_logo.png`,
+              image: `${CANONICAL_BASE}/law-firm-hero-image.jpg`,
+              logo: `${CANONICAL_BASE}/tas_hukuk_logo.png`,
               address: {
                 "@type": "PostalAddress",
                 streetAddress: SITE_CONFIG.address,
@@ -130,10 +139,10 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: SITE_CONFIG.title,
-              url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+              url: CANONICAL_BASE,
               potentialAction: {
                 "@type": "SearchAction",
-                target: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/makaleler?q={search_term_string}`,
+                target: `${CANONICAL_BASE}/makaleler?q={search_term_string}`,
                 "query-input": "required name=search_term_string",
               },
             }),

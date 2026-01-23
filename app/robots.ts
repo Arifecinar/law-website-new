@@ -1,18 +1,23 @@
 import type { MetadataRoute } from "next"
 
+// Canonical domain - www yok, https var
+const CANONICAL_BASE = "https://taslawfirm.com.tr"
+
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/"],
+        disallow: ["/admin", "/admin/", "/api/"],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/admin", "/admin/", "/api/"],
       },
     ],
-    sitemap: `${base}/sitemap.xml`,
-    host: base,
+    sitemap: `${CANONICAL_BASE}/sitemap.xml`,
+    host: CANONICAL_BASE,
   }
 }
-
-
