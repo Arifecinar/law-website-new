@@ -93,7 +93,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: "#7A2420",
+  // Mobilde overscroll sırasında görünen renk - saf beyaz
+  themeColor: "#FFFFFF",
 }
 
 export default function RootLayout({
