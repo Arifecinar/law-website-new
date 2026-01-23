@@ -73,7 +73,7 @@ export default function HomePage() {
         </span>
       </div>
 
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-semibold text-white text-balance leading-[1.1] md:leading-[1.05] tracking-tight animate-fade-in-up delay-100 drop-shadow-2xl">
+      <h1 className="text-[1.75rem] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-white text-balance leading-[1.15] md:leading-[1.05] tracking-tight animate-fade-in-up delay-100 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
         Haklarınızı En İyi Şekilde Korumanın Etkili Çözümleri
       </h1>
 
