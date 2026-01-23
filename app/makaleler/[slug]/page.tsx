@@ -3,10 +3,13 @@ import { Footer } from "@/frontend/components/footer"
 import { Button } from "@/components/ui/button"
 import { Calendar, User, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+import Script from "next/script"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { getArticleBySlug, getArticles } from "@/lib/db/queries"
+import { getArticleBySlug, getArticles, getCategories } from "@/lib/db/queries"
 import { ShareButton } from "@/components/share-button"
+import { SITE_CONFIG } from "@/lib/constants"
 
 export default async function MakaleDetayPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -14,6 +17,14 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
   if (!article) {
     notFound()
   }
+  
+  // Kategori adını veritabanından çek
+  const allCategories = await getCategories()
+  const categoryObj = article.category_id 
+    ? allCategories.find((c: any) => c.id === article.category_id)
+    : null
+  const categoryName = categoryObj?.name || article.category || "Genel"
+  
   const dateSrc = article.published_at || article.created_at
   const dateText = dateSrc ? new Date(dateSrc).toLocaleDateString("tr-TR") : ""
   const related = (await getArticles())
@@ -36,7 +47,7 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
             <div className="space-y-6 mb-8">
               <div className="flex items-center gap-3">
                 <div className="px-4 py-1.5 bg-accent/10 rounded-full border border-accent/20">
-                  <span className="text-sm font-medium text-accent">{article.category || "Genel"}</span>
+                  <span className="text-sm font-medium text-accent">{categoryName}</span>
                 </div>
               </div>
 
@@ -61,6 +72,68 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
             </div>
           </div>
         </div>
+
+        {/* SEO: Article JSON-LD */}
+        <Script
+          id="ld-json-article"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: article.title,
+              description: article.excerpt || SITE_CONFIG.description,
+              image: article.image_url ? [article.image_url] : undefined,
+              datePublished: article.published_at || article.created_at,
+              dateModified: article.updated_at || article.published_at || article.created_at,
+              author: article.author
+                ? { "@type": "Person", name: article.author }
+                : { "@type": "Organization", name: SITE_CONFIG.name },
+              publisher: {
+                "@type": "Organization",
+                name: SITE_CONFIG.name,
+                logo: {
+                  "@type": "ImageObject",
+                  url: "/tas_hukuk_logo.png",
+                },
+              },
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/makaleler/${article.slug}`,
+              },
+            }),
+          }}
+        />
+        <Script
+          id="ld-json-breadcrumb-tr"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Ana Sayfa",
+                  item: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Makaleler",
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/makaleler`,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: article.title,
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/makaleler/${article.slug}`,
+                },
+              ],
+            }),
+          }}
+        />
 
         {/* Article Image */}
         <div className="container mx-auto px-4 lg:px-8 mb-12">
@@ -153,4 +226,64 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
       <Footer />
     </div>
   )
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+): Promise<Metadata> {
+  const { slug } = await params
+  const article = await getArticleBySlug(slug)
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  if (!article) {
+    return {
+      title: "Makale",
+      description: SITE_CONFIG.description,
+      alternates: {
+        canonical: `${base}/makaleler/${slug}`,
+        languages: {
+          "tr-TR": `${base}/makaleler/${slug}`,
+          "en-US": `${base}/articles/${slug}`,
+        },
+      },
+    }
+  }
+  const title = article.title
+  const description = article.excerpt || SITE_CONFIG.description
+  const url = `${base}/makaleler/${article.slug}`
+  const image = article.image_url || "/placeholder.jpg"
+  const published = article.published_at || article.created_at
+  const author = article.author || SITE_CONFIG.name
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+      languages: {
+        "tr-TR": `${base}/makaleler/${article.slug}`,
+        "en-US": `${base}/articles/${article.slug}`,
+      },
+    },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description,
+      images: image ? [image] : undefined,
+      locale: "tr_TR",
+      siteName: "Taş Hukuk",
+      publishedTime: published || undefined,
+      authors: [author],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  }
 }

@@ -3,6 +3,33 @@ import { Footer } from "@/frontend/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Briefcase } from "lucide-react"
 import Image from "next/image"
+import type { Metadata } from "next"
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+
+export const metadata: Metadata = {
+  title: "Av. Kadir Taş",
+  description:
+    "Av. Kadir Taş hakkında: İzmir'de profesyonel deneyim, uzmanlık alanları ve hukuki yaklaşım.",
+  keywords: ["avukat kadir taş", "izmir avukat", "hukuk danışmanı", "taş hukuk bürosu"],
+  alternates: {
+    canonical: siteUrl + "/av-kadir-tas",
+  },
+  openGraph: {
+    type: "profile",
+    title: "Av. Kadir Taş | Taş Hukuk & Danışmanlık",
+    description: "İzmir'de profesyonel hukuki danışmanlık. Deneyim, uzmanlık alanları ve hukuki yaklaşım.",
+    url: siteUrl + "/av-kadir-tas",
+    images: [siteUrl + "/law-firm-avukat-fotoğrafı.jpg"],
+    locale: "tr_TR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Av. Kadir Taş | Taş Hukuk & Danışmanlık",
+    description: "İzmir'de profesyonel hukuki danışmanlık. Deneyim ve uzmanlık alanları.",
+    images: [siteUrl + "/law-firm-avukat-fotoğrafı.jpg"],
+  },
+}
 
 export default function AvKadirTasPage() {
   return (

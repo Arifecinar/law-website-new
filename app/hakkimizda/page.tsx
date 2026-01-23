@@ -3,6 +3,37 @@ import { Footer } from "@/frontend/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Award, Target, Users, Scale } from "lucide-react"
 import Image from "next/image"
+import type { Metadata } from "next"
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+
+export const metadata: Metadata = {
+  title: "Hakkımızda",
+  description:
+    "Taş Hukuk & Danışmanlık: Adalet ve müvekkil memnuniyeti odaklı, alanında uzman hukuk bürosu. İzmir'de profesyonel hukuki danışmanlık.",
+  keywords: ["taş hukuk", "hukuk bürosu", "izmir avukat", "hukuki danışmanlık", "avukat kadir taş"],
+  alternates: {
+    canonical: siteUrl + "/hakkimizda",
+    languages: {
+      "tr-TR": siteUrl + "/hakkimizda",
+      "en-US": siteUrl + "/about",
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: "Hakkımızda | Taş Hukuk & Danışmanlık",
+    description: "Adalet ve müvekkil memnuniyeti odaklı, alanında uzman hukuk bürosu. İzmir'de profesyonel hukuki danışmanlık.",
+    url: siteUrl + "/hakkimizda",
+    images: [siteUrl + "/about-hero-image.jpg"],
+    locale: "tr_TR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hakkımızda | Taş Hukuk & Danışmanlık",
+    description: "Adalet ve müvekkil memnuniyeti odaklı, alanında uzman hukuk bürosu.",
+    images: [siteUrl + "/about-hero-image.jpg"],
+  },
+}
 
 export default function HakkimizdaPage() {
   return (

@@ -108,14 +108,15 @@ export function Header() {
           </button>
         </div>
 
+        {/* Mobile Menu with animations */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-6 space-y-2 border-t border-border text-center">
+          <div className="lg:hidden py-6 space-y-2 border-t border-border text-center animate-menu-open bg-background/98 backdrop-blur-lg">
             <Link
               href="/"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-75 ${
                 isActive("/")
                   ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
               }`}
               onClick={(e) => { if (pathname === "/") { e.preventDefault(); router.refresh() } setMobileMenuOpen(false) }}
             >
@@ -123,10 +124,10 @@ export function Header() {
             </Link>
             <Link
               href="/hakkimizda"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-100 ${
                 isActive("/hakkimizda")
                   ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -134,10 +135,10 @@ export function Header() {
             </Link>
             <Link
               href="/calisma-alanlari"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-150 ${
                 isActive("/calisma-alanlari")
                   ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -145,10 +146,10 @@ export function Header() {
             </Link>
             <Link
               href="/makaleler"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-200 ${
                 isActive("/makaleler")
                   ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -156,22 +157,22 @@ export function Header() {
             </Link>
             <Link
               href="/iletisim"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-300 ${
                 isActive("/iletisim")
                   ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               İletişim
             </Link>
-            <div className="pt-4">
-              <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+            <div className="pt-4 space-y-3 animate-menu-item delay-400">
+              <Button asChild size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 btn-hover-scale shadow-lg">
                 <Link href="/online-randevu" onClick={() => setMobileMenuOpen(false)}>
                   Online Randevu
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="w-full mt-2" >
+              <Button asChild variant="outline" size="lg" className="w-full">
                 <Link href="/admin/login" onClick={() => setMobileMenuOpen(false)} title="Avukat girişi" aria-label="Avukat girişi">
                   Avukat girişi
                 </Link>

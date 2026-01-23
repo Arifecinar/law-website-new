@@ -3,8 +3,11 @@ export const SITE_CONFIG = {
   title: "Av. Kadir Taş - Hukuk Bürosu",
   description: "Profesyonel hukuki danışmanlık ve dava takibi hizmetleri",
   phone: "+90 535 400 00 55",
-  email: "info@avkadirtas.com",
-  address: "Kağıthane/İSTANBUL",
+  email: "av.kadir.tas@gmail.com",
+  address: "Adalet Mah. Şehit Polis Fethi Sekin Cad. No.6 Ventus Tower, Bayraklı, İzmir 35530",
+  addressShort: "İzmir",
+  // Sosyal medya hesaplarınızı buraya ekleyin (boş bırakırsanız footer'da görünmez)
+  // Örnek: facebook: "https://facebook.com/tashukuk"
   socialMedia: {
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",

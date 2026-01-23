@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       author: String(body.author || "").trim(),
       image_url: body.image_url ? String(body.image_url).trim() : undefined,
       category: body.category ? String(body.category).trim() : undefined,
+      category_id: body.category_id ? Number(body.category_id) : undefined,
       published: Boolean(body.published),
     }
 

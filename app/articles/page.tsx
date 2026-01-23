@@ -5,9 +5,34 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
 import { getArticles } from "@/lib/db/queries"
+import type { Metadata } from "next"
 
 export const revalidate = 60
 
+export const metadata: Metadata = {
+  title: "Articles",
+  description:
+    "Legal insights and practical guidance from experienced attorneys across corporate, litigation, employment and more.",
+  alternates: {
+    canonical: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/articles",
+    languages: {
+      "en-US": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/articles",
+      "tr-TR": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/makaleler",
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: "Articles",
+    description:
+      "Legal insights and practical guidance from experienced attorneys across corporate, litigation, employment and more.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Articles",
+    description:
+      "Legal insights and practical guidance from experienced attorneys across corporate, litigation, employment and more.",
+  },
+}
 export default async function ArticlesPage() {
   const articles = await getArticles()
 

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Mail, Phone, Trash } from "lucide-react"
+import { Mail, Phone, Trash, Clock } from "lucide-react"
 import { getContactMessages as getContacts } from "@/lib/db/queries"
 
 export const dynamic = "force-dynamic"
@@ -76,7 +76,23 @@ export default async function AdminContactsPage() {
                         </a>
                       </div>
                     )}
-                    <div className="text-muted-foreground/60">{new Date(contact.created_at).toLocaleDateString()}</div>
+                    <div className="flex items-center gap-2 text-muted-foreground/70">
+                      <Clock size={14} />
+                      <span>
+                        {contact.created_at
+                          ? new Date(contact.created_at).toLocaleDateString("tr-TR", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }) +
+                            " - " +
+                            new Date(contact.created_at).toLocaleTimeString("tr-TR", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "-"}
+                      </span>
+                    </div>
                   </div>
 
                   <div className="pt-4 border-t border-border">

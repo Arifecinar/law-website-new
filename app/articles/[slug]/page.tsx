@@ -3,8 +3,11 @@ import { Footer } from "@/frontend/components/footer"
 import { Button } from "@/components/ui/button"
 import { Calendar, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+import Script from "next/script"
 import { notFound } from "next/navigation"
 import { getArticleBySlug } from "@/lib/db/queries"
+import { SITE_CONFIG } from "@/lib/constants"
 
 export const revalidate = 60
 
@@ -87,9 +90,100 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
           </div>
         </div>
+
+        {/* SEO: Article JSON-LD */}
+        <Script
+          id="ld-json-article-en"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: article.title,
+              description: article.excerpt || SITE_CONFIG.description,
+              image: article.image_url ? [article.image_url] : undefined,
+              datePublished: article.published_at || article.created_at,
+              dateModified: article.updated_at || article.published_at || article.created_at,
+              author: article.author
+                ? { "@type": "Person", name: article.author }
+                : { "@type": "Organization", name: SITE_CONFIG.name },
+              publisher: {
+                "@type": "Organization",
+                name: SITE_CONFIG.name,
+                logo: {
+                  "@type": "ImageObject",
+                  url: "/tas_hukuk_logo.png",
+                },
+              },
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/articles/${article.slug}`,
+              },
+            }),
+          }}
+        />
       </article>
 
       <Footer />
     </div>
   )
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+): Promise<Metadata> {
+  const article = await getArticleBySlug(params.slug)
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  if (!article) {
+    return {
+      title: "Article",
+      description: SITE_CONFIG.description,
+      alternates: {
+        canonical: `${base}/articles/${params.slug}`,
+        languages: {
+          "tr-TR": `${base}/makaleler/${params.slug}`,
+          "en-US": `${base}/articles/${params.slug}`,
+        },
+      },
+    }
+  }
+  const title = article.title
+  const description = article.excerpt || SITE_CONFIG.description
+  const url = `${base}/articles/${article.slug}`
+  const image = article.image_url || "/placeholder.jpg"
+  const published = article.published_at || article.created_at
+  const author = article.author || SITE_CONFIG.name
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+      languages: {
+        "tr-TR": `${base}/makaleler/${article.slug}`,
+        "en-US": `${base}/articles/${article.slug}`,
+      },
+    },
+    openGraph: {
+      type: "article",
+      url,
+      title,
+      description,
+      images: image ? [image] : undefined,
+      locale: "en_US",
+      siteName: "Taş Hukuk",
+      publishedTime: published || undefined,
+      authors: [author],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  }
 }

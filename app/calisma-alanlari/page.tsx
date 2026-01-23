@@ -5,6 +5,41 @@ import { Button } from "@/components/ui/button"
 import { Briefcase, Scale, Users, Shield, FileText, Award, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { CenterOnHash } from "@/components/center-on-hash"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Çalışma Alanları",
+  description:
+    "İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku başta olmak üzere sunduğumuz hukuki hizmetler.",
+  keywords: [
+    "iş hukuku",
+    "ceza hukuku",
+    "aile hukuku",
+    "gayrimenkul hukuku",
+    "miras hukuku",
+    "ticaret hukuku",
+    "hukuki hizmetler",
+  ],
+  alternates: {
+    canonical: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/calisma-alanlari",
+    languages: {
+      "tr-TR": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/calisma-alanlari",
+      "en-US": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/practice-areas",
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: "Çalışma Alanları",
+    description:
+      "İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku başta olmak üzere sunduğumuz hukuki hizmetler.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Çalışma Alanları",
+    description:
+      "İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku başta olmak üzere sunduğumuz hukuki hizmetler.",
+  },
+}
 
 export default function CalismaAlanlariPage() {
   const practiceAreas = [

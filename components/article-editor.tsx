@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,15 +12,40 @@ import { useRouter } from "next/navigation"
 import { useRef } from "react"
 import { UploadCloud } from "lucide-react"
 
+type Category = {
+  id: number
+  name: string
+  slug: string
+  parent_id?: number | null
+  children?: Category[]
+}
+
 export function ArticleEditor() {
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [category, setCategory] = useState("")
+  const [categoryId, setCategoryId] = useState<number | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
   const [published, setPublished] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const { toast } = useToast()
   const router = useRouter()
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  async function fetchCategories() {
+    try {
+      const res = await fetch("/api/admin/categories")
+      if (res.ok) {
+        const data = await res.json()
+        setCategories(data.flat || [])
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error)
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -33,7 +56,7 @@ export function ArticleEditor() {
       title: formData.get("title"),
       excerpt: formData.get("excerpt"),
       content: formData.get("content"),
-      category,
+      category_id: categoryId,
       author: formData.get("author"),
       read_time: Number(formData.get("read_time")),
       image_url: formData.get("image_url"),
@@ -96,19 +119,39 @@ export function ArticleEditor() {
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="category">Kategori *</Label>
-          <Select value={category} onValueChange={setCategory} required>
+          <Select 
+            value={categoryId ? categoryId.toString() : "none"} 
+            onValueChange={(value) => {
+              if (value === "none") {
+                setCategoryId(null)
+              } else {
+                const parsed = parseInt(value, 10)
+                setCategoryId(isNaN(parsed) ? null : parsed)
+              }
+            }} 
+            required
+          >
             <SelectTrigger>
               <SelectValue placeholder="Kategori seçiniz" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Genel">Genel</SelectItem>
-              <SelectItem value="Şirketler Hukuku">Şirketler Hukuku</SelectItem>
-              <SelectItem value="Dava Takibi">Dava Takibi</SelectItem>
-              <SelectItem value="İş Hukuku">İş Hukuku</SelectItem>
-              <SelectItem value="Gayrimenkul">Gayrimenkul</SelectItem>
-              <SelectItem value="Fikri Mülkiyet">Fikri Mülkiyet</SelectItem>
-              <SelectItem value="Miras">Miras</SelectItem>
-              <SelectItem value="Hukuk Haberleri">Hukuk Haberleri</SelectItem>
+              <SelectItem value="none">Kategori seçiniz</SelectItem>
+              {categories
+                .filter((cat) => cat.parent_id === null)
+                .map((cat) => (
+                  <React.Fragment key={cat.id}>
+                    <SelectItem value={cat.id.toString()}>
+                      {cat.name}
+                    </SelectItem>
+                    {categories
+                      .filter((subCat) => subCat.parent_id === cat.id)
+                      .map((subCat) => (
+                        <SelectItem key={subCat.id} value={subCat.id.toString()}>
+                          &nbsp;&nbsp;↳ {subCat.name}
+                        </SelectItem>
+                      ))}
+                  </React.Fragment>
+                ))}
             </SelectContent>
           </Select>
         </div>

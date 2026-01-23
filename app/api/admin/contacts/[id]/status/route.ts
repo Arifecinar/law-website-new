@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { updateContactStatus } from "@/lib/db/queries"
+import { updateContactMessageStatus } from "@/lib/db/queries"
 
 export async function POST(
   request: Request,
@@ -24,7 +24,7 @@ export async function POST(
       return NextResponse.json({ error: "invalid id" }, { status: 400 })
     }
 
-    await updateContactStatus(id, status)
+    await updateContactMessageStatus(id, status)
 
     const referer = request.headers.get("referer")
     if (!contentType.includes("application/json") && referer) {

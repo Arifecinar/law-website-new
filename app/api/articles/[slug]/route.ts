@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server"
 import { getArticleBySlug } from "@/lib/db/queries"
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ slug: string }> }
+) {
   try {
-    const article = await getArticleBySlug(params.slug)
+    const { slug } = await params
+    const article = await getArticleBySlug(slug)
 
     if (!article) {
       return NextResponse.json(

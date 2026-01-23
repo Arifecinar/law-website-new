@@ -4,6 +4,32 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Briefcase, Scale, Users, Home, FileText, Shield, ArrowRight } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Practice Areas",
+  description:
+    "Explore our core practice areas and services: Corporate, Litigation, Employment, IP, Real Estate, Estate Planning.",
+  alternates: {
+    canonical: (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/practice-areas",
+    languages: {
+      "en-US": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/practice-areas",
+      "tr-TR": (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000") + "/calisma-alanlari",
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: "Practice Areas",
+    description:
+      "Explore our core practice areas and services: Corporate, Litigation, Employment, IP, Real Estate, Estate Planning.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Practice Areas",
+    description:
+      "Explore our core practice areas and services: Corporate, Litigation, Employment, IP, Real Estate, Estate Planning.",
+  },
+}
 
 const practiceAreas = [
   {

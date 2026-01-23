@@ -1,23 +1,18 @@
-import { fileURLToPath } from "url"
-import path from "path"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      root: __dirname,
-    },
-  },
-
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
 
   images: {
-    unoptimized: true,
+    unoptimized: false,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'qgkgamlzeuobewvnbvct.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
 }
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getArticleById, updateArticle } from "@/lib/db/queries"
+import { deleteArticle, getArticleById, updateArticle } from "@/lib/db/queries"
 import { validateArticleData, generateSlug } from "@/lib/validations/article"
 
 export async function GET(
@@ -53,6 +53,12 @@ export async function PUT(
           : typeof body.category === "string"
             ? body.category.trim()
             : existing.category ?? null,
+      category_id:
+        body.category_id === null
+          ? null
+          : body.category_id !== undefined
+            ? Number(body.category_id) || null
+            : existing.category_id ?? null,
       published: typeof body.published === "boolean" ? body.published : existing.published,
     }
 
@@ -70,6 +76,23 @@ export async function PUT(
   } catch (error) {
     console.error("Admin update article error:", error)
     return NextResponse.json({ error: "Makale güncellenemedi" }, { status: 500 })
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id: idParam } = await params
+    const id = Number(idParam)
+    if (!Number.isFinite(id)) return NextResponse.json({ error: "invalid id" }, { status: 400 })
+
+    await deleteArticle(id)
+    return NextResponse.json({ success: true })
+  } catch (e) {
+    console.error("Delete article error:", e)
+    return NextResponse.json({ error: "Silme işlemi başarısız" }, { status: 500 })
   }
 }
 

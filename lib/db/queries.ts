@@ -1,140 +1,129 @@
 import { getAdminClient } from "@/lib/supabase"
 
-type Article = {
-  id: number
-  title: string
-  slug: string
-  excerpt: string | null
-  content: string
-  author: string
-  image_url?: string | null
-  category?: string | null
-  published?: boolean
-  published_at?: string | null
-  created_at: string
-  updated_at: string
+// ================= PRACTICE AREAS =================
+
+export async function getPracticeAreas() {
+  const supabase = getAdminClient()
+  const { data, error } = await supabase
+    .from("practice_areas")
+    .select("*")
+    .order("display_order", { ascending: true })
+    .order("title", { ascending: true })
+  
+  if (error) {
+    console.error("Error fetching practice areas:", error)
+    return []
+  }
+  
+  return data || []
 }
 
-type PracticeArea = {
-  id: number
-  title: string
-  slug: string
-  description?: string | null
-  icon?: string | null
-  display_order?: number
-  created_at: string
-  updated_at: string
+export async function getPracticeAreaBySlug(slug: string) {
+  const supabase = getAdminClient()
+  const { data, error } = await supabase
+    .from("practice_areas")
+    .select("*")
+    .eq("slug", slug)
+    .single()
+  
+  if (error) {
+    console.error("Error fetching practice area by slug:", error)
+    return null
+  }
+  
+  return data
 }
 
-type Appointment = {
-  id: number
-  name: string
-  email: string
-  phone: string
-  practice_area: string
-  subject?: string | null
-  message: string
-  preferred_datetime?: string | null
-  status: string
-  created_at: string
-  updated_at: string
-}
+// ================= ARTICLES =================
 
-type ContactMessage = {
-  id: number
-  name: string
-  email: string
-  phone?: string | null
-  subject?: string | null
-  message: string
-  status: string
-  created_at: string
-  updated_at: string
-}
-
-export async function getArticles(): Promise<Article[]> {
-  try {
+export async function getArticles() {
     const supabase = getAdminClient()
     const { data, error } = await supabase
       .from("articles")
       .select("*")
-      .order("published_at", { ascending: false, nullsFirst: false })
-      .order("created_at", { ascending: false, nullsFirst: false })
+    .order("published_at", { ascending: false })
+    .order("created_at", { ascending: false })
+  
     if (error) {
-      // Hata detaylarını daha okunur şekilde yazdır
-      console.error("Supabase getArticles error:", {
-        message: (error as any)?.message,
-        code: (error as any)?.code,
-        details: (error as any)?.details,
-        hint: (error as any)?.hint,
-        raw: JSON.stringify(error),
-      })
-      return []
-    }
-    return (data as any) || []
-  } catch (err) {
-    console.error("Supabase getArticles exception:", {
-      message: (err as any)?.message,
-      stack: (err as any)?.stack,
-    })
+    console.error("Error fetching articles:", error)
     return []
   }
+  
+  return data || []
 }
 
-export async function getArticleBySlug(slug: string): Promise<Article | null> {
+export async function getArticleById(id: number) {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from("articles").select("*").eq("slug", slug).limit(1).maybeSingle()
+  const { data, error } = await supabase
+    .from("articles")
+    .select("*")
+    .eq("id", id)
+    .single()
+  
   if (error) {
-    console.error("Supabase getArticleBySlug error:", error)
+    console.error("Error fetching article by ID:", error)
     return null
   }
-  return (data as any) || null
+  
+  return data
 }
 
-export async function getArticleById(id: number): Promise<Article | null> {
+export async function getArticleBySlug(slug: string) {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from("articles").select("*").eq("id", id).limit(1).maybeSingle()
+  const { data, error } = await supabase
+    .from("articles")
+    .select("*")
+    .eq("slug", slug)
+    .single()
+  
   if (error) {
-    console.error("Supabase getArticleById error:", error)
+    console.error("Error fetching article by slug:", error)
     return null
   }
-  return (data as any) || null
+  
+  return data
 }
 
-export async function createArticle(data: {
+export async function createArticle(article: {
   title: string
   slug: string
-  excerpt: string
+  excerpt?: string
   content: string
-  author: string
+  author?: string
   image_url?: string
   category?: string
+  category_id?: number
   published?: boolean
-}): Promise<Article> {
+}) {
   const supabase = getAdminClient()
+  
   const now = new Date().toISOString()
-  const payload = {
-    title: data.title,
-    slug: data.slug,
-    excerpt: data.excerpt,
-    content: data.content,
-    author: data.author,
-    image_url: data.image_url || null,
-    category: data.category || null,
-    published: data.published ?? true,
-    published_at: (data.published ?? true) ? now : null,
-  }
-  const { data: rows, error } = await supabase.from("articles").insert(payload).select("*").limit(1)
+  const published_at = article.published ? now : null
+  
+  const { data, error } = await supabase
+    .from("articles")
+    .insert([
+      {
+        ...article,
+        published_at,
+        created_at: now,
+        updated_at: now,
+      },
+    ])
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase createArticle error:", error)
-    throw error
+    console.error("Error creating article:", error)
+    throw new Error(error.message)
   }
-  return rows?.[0] as any
+  
+  return data
 }
 
 export async function updateArticle(
   id: number,
-  data: {
+  updates: {
     title?: string
     slug?: string
     excerpt?: string
@@ -142,181 +131,259 @@ export async function updateArticle(
     author?: string
     image_url?: string | null
     category?: string | null
+    category_id?: number | null
     published?: boolean
     published_at?: string | null
-  },
-): Promise<Article> {
+  }
+) {
   const supabase = getAdminClient()
-  const payload = {
-    ...(data.title !== undefined ? { title: data.title } : {}),
-    ...(data.slug !== undefined ? { slug: data.slug } : {}),
-    ...(data.excerpt !== undefined ? { excerpt: data.excerpt } : {}),
-    ...(data.content !== undefined ? { content: data.content } : {}),
-    ...(data.author !== undefined ? { author: data.author } : {}),
-    ...(data.image_url !== undefined ? { image_url: data.image_url } : {}),
-    ...(data.category !== undefined ? { category: data.category } : {}),
-    ...(data.published !== undefined ? { published: data.published } : {}),
-    ...(data.published_at !== undefined ? { published_at: data.published_at } : {}),
-  }
-  const { data: rows, error } = await supabase.from("articles").update(payload).eq("id", id).select("*").limit(1)
+  
+  const { data, error } = await supabase
+    .from("articles")
+    .update({
+      ...updates,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase updateArticle error:", error)
-    throw error
+    console.error("Error updating article:", error)
+    throw new Error(error.message)
   }
-  return rows?.[0] as any
+  
+  return data
 }
 
-export async function getPracticeAreas(): Promise<PracticeArea[]> {
+export async function deleteArticle(id: number) {
+  const supabase = getAdminClient()
+  
+  const { error } = await supabase
+    .from("articles")
+    .delete()
+    .eq("id", id)
+  
+  if (error) {
+    console.error("Error deleting article:", error)
+    throw new Error(error.message)
+  }
+  
+  return true
+}
+
+// ================= APPOINTMENTS =================
+
+export async function getAppointments() {
   const supabase = getAdminClient()
   const { data, error } = await supabase
-    .from("practice_areas")
+    .from("appointments")
     .select("*")
-    .order("display_order", { ascending: true, nullsFirst: true })
+    .order("created_at", { ascending: false })
+  
   if (error) {
-    console.error("Supabase getPracticeAreas error:", error)
+    console.error("Error fetching appointments:", error)
     return []
   }
-  return (data as any) || []
+  
+  return data || []
 }
 
-export async function getPracticeAreaBySlug(slug: string): Promise<PracticeArea | null> {
+export async function getAppointmentById(id: number) {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from("practice_areas").select("*").eq("slug", slug).limit(1).maybeSingle()
+  const { data, error } = await supabase
+    .from("appointments")
+    .select("*")
+    .eq("id", id)
+    .single()
+  
   if (error) {
-    console.error("Supabase getPracticeAreaBySlug error:", error)
+    console.error("Error fetching appointment by ID:", error)
     return null
   }
-  return (data as any) || null
+  
+  return data
 }
 
-export async function createAppointment(data: {
+export async function createAppointment(appointment: {
   name: string
-  email: string
   phone: string
-  practice_area: string
+  email?: string
+  practice_area?: string
   subject?: string
   message: string
   preferred_date?: string
-}): Promise<Appointment> {
+  status?: string
+}) {
   const supabase = getAdminClient()
-  const payload = {
-    name: data.name,
-    email: data.email,
-    phone: data.phone,
-    practice_area: data.practice_area,
-    subject: data.subject || null,
-    message: data.message,
-    preferred_datetime: data.preferred_date || null,
-    status: "pending",
-  }
-  const { data: rows, error } = await supabase.from("appointments").insert(payload).select("*").limit(1)
+  
+  const { data, error } = await supabase
+    .from("appointments")
+    .insert([
+      {
+        name: appointment.name,
+        phone: appointment.phone,
+        email: appointment.email,
+        practice_area: appointment.practice_area,
+        subject: appointment.subject,
+        message: appointment.message,
+        preferred_datetime: appointment.preferred_date,
+        status: appointment.status || "pending",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ])
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase createAppointment error:", error)
-    throw error
+    console.error("Error creating appointment:", error)
+    throw new Error(error.message)
   }
-  return rows?.[0] as any
+  
+  return data
 }
 
-export async function getAppointments(): Promise<Appointment[]> {
+export async function updateAppointmentStatus(id: number, status: string) {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from("appointments").select("*").order("created_at", { ascending: false })
+  
+  const { data, error } = await supabase
+    .from("appointments")
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase getAppointments error:", error)
-    return []
+    console.error("Error updating appointment status:", error)
+    throw new Error(error.message)
   }
-  return (data as any) || []
+  
+  return data
 }
 
-export async function getAppointmentById(id: number): Promise<Appointment | null> {
+export async function deleteAppointment(id: number) {
   const supabase = getAdminClient()
-  const { data, error } = await supabase.from("appointments").select("*").eq("id", id).limit(1).maybeSingle()
+  
+  const { error } = await supabase
+    .from("appointments")
+    .delete()
+    .eq("id", id)
+  
   if (error) {
-    console.error("Supabase getAppointmentById error:", error)
-    return null
+    console.error("Error deleting appointment:", error)
+    throw new Error(error.message)
   }
-  return (data as any) || null
+  
+  return true
 }
 
-export async function getContactMessages(): Promise<ContactMessage[]> {
+// ================= CONTACT MESSAGES =================
+
+export async function getContactMessages() {
   const supabase = getAdminClient()
   const { data, error } = await supabase
     .from("contact_messages")
     .select("*")
     .order("created_at", { ascending: false })
+  
   if (error) {
-    console.error("Supabase getContactMessages error:", error)
+    console.error("Error fetching contact messages:", error)
     return []
   }
-  return (data as any) || []
+  
+  return data || []
 }
 
-export async function createContactMessage(data: {
-  name: string
+export async function createContactMessage(message: {
+  full_name: string
   email: string
   phone?: string
   subject?: string
   message: string
-}): Promise<ContactMessage> {
+  status?: string
+}) {
   const supabase = getAdminClient()
-  const payload = {
-    name: data.name,
-    email: data.email,
-    phone: data.phone || null,
-    subject: data.subject || null,
-    message: data.message,
-    status: "new",
-  }
-  const { data: rows, error } = await supabase.from("contact_messages").insert(payload).select("*").limit(1)
+  
+  // full_name -> name mapping for database
+  const { full_name, ...rest } = message
+  
+  const { data, error } = await supabase
+    .from("contact_messages")
+    .insert([
+      {
+        name: full_name,
+        ...rest,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    ])
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase createContactMessage error:", error)
-    throw error
+    console.error("Error creating contact message:", error)
+    throw new Error(error.message)
   }
-  return rows?.[0] as any
+  
+  return data
 }
 
-// Admin helpers
-export async function updateAppointmentStatus(id: number, status: string): Promise<void> {
+export async function updateContactMessageStatus(id: number, status: string) {
   const supabase = getAdminClient()
-  const { error } = await supabase.from("appointments").update({ status }).eq("id", id)
+  
+  const { data, error } = await supabase
+    .from("contact_messages")
+    .update({
+      status,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select()
+    .single()
+  
   if (error) {
-    console.error("Supabase updateAppointmentStatus error:", error)
-    throw error
+    console.error("Error updating contact message status:", error)
+    throw new Error(error.message)
   }
+  
+  return data
 }
 
-export async function updateContactStatus(id: number, status: string): Promise<void> {
+export async function deleteContactMessage(id: number) {
   const supabase = getAdminClient()
-  const { error } = await supabase.from("contact_messages").update({ status }).eq("id", id)
+  
+  const { error } = await supabase
+    .from("contact_messages")
+    .delete()
+    .eq("id", id)
+  
   if (error) {
-    console.error("Supabase updateContactStatus error:", error)
-    throw error
+    console.error("Error deleting contact message:", error)
+    throw new Error(error.message)
   }
+  
+  return true
 }
 
-// Delete helpers
-export async function deleteAppointment(id: number): Promise<void> {
+// ================= CATEGORIES =================
+
+export async function getCategories() {
   const supabase = getAdminClient()
-  const { error } = await supabase.from("appointments").delete().eq("id", id)
+  const { data, error } = await supabase
+    .from("categories")
+    .select("*")
+    .eq("is_active", true)
+    .order("display_order", { ascending: true })
+    .order("name", { ascending: true })
+  
   if (error) {
-    console.error("Supabase deleteAppointment error:", error)
-    throw error
-  }
+    console.error("Error fetching categories:", error)
+    return []
 }
 
-export async function deleteContactMessage(id: number): Promise<void> {
-  const supabase = getAdminClient()
-  const { error } = await supabase.from("contact_messages").delete().eq("id", id)
-  if (error) {
-    console.error("Supabase deleteContactMessage error:", error)
-    throw error
-  }
-}
-
-export async function deleteArticle(id: number): Promise<void> {
-  const supabase = getAdminClient()
-  const { error } = await supabase.from("articles").delete().eq("id", id)
-  if (error) {
-    console.error("Supabase deleteArticle error:", error)
-    throw error
-  }
+  return data || []
 }

@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const body = await request.json()
 
     await createContactMessage({
-      name: body.name,
+      full_name: body.name,
       email: body.email,
       phone: body.phone,
       subject: body.subject,

@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -11,6 +10,13 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { UploadCloud } from "lucide-react"
 import { useRouter } from "next/navigation"
+
+type Category = {
+  id: number
+  name: string
+  slug: string
+  parent_id?: number | null
+}
 
 type EditArticleFormProps = {
   article: any
@@ -22,7 +28,8 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const [title, setTitle] = useState<string>(article.title || "")
-  const [category, setCategory] = useState<string>(article.category || "")
+  const [categoryId, setCategoryId] = useState<number | null>(article.category_id || null)
+  const [categories, setCategories] = useState<Category[]>([])
   const [readTime, setReadTime] = useState<number>(Number((article as any).read_time) || 5)
   const [author, setAuthor] = useState<string>(article.author || "")
   const [excerpt, setExcerpt] = useState<string>(article.excerpt || "")
@@ -31,6 +38,22 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(article.image_url || null)
   const [uploading, setUploading] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+  async function fetchCategories() {
+    try {
+      const res = await fetch("/api/admin/categories")
+      if (res.ok) {
+        const data = await res.json()
+        setCategories(data.flat || [])
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error)
+    }
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -41,7 +64,7 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           title,
-          category,
+          category_id: categoryId,
           author,
           excerpt,
           content,
@@ -103,19 +126,39 @@ export function EditArticleForm({ article }: EditArticleFormProps) {
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="category">Kategori *</Label>
-          <Select value={category} onValueChange={setCategory} required>
+          <Select 
+            value={categoryId ? categoryId.toString() : "none"} 
+            onValueChange={(value) => {
+              if (value === "none") {
+                setCategoryId(null)
+              } else {
+                const parsed = parseInt(value, 10)
+                setCategoryId(isNaN(parsed) ? null : parsed)
+              }
+            }} 
+            required
+          >
             <SelectTrigger>
               <SelectValue placeholder="Kategori seçiniz" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Genel">Genel</SelectItem>
-              <SelectItem value="Şirketler Hukuku">Şirketler Hukuku</SelectItem>
-              <SelectItem value="Dava Takibi">Dava Takibi</SelectItem>
-              <SelectItem value="İş Hukuku">İş Hukuku</SelectItem>
-              <SelectItem value="Gayrimenkul">Gayrimenkul</SelectItem>
-              <SelectItem value="Fikri Mülkiyet">Fikri Mülkiyet</SelectItem>
-              <SelectItem value="Miras">Miras</SelectItem>
-              <SelectItem value="Hukuk Haberleri">Hukuk Haberleri</SelectItem>
+              <SelectItem value="none">Kategori seçiniz</SelectItem>
+              {categories
+                .filter((cat) => cat.parent_id === null)
+                .map((cat) => (
+                  <React.Fragment key={cat.id}>
+                    <SelectItem value={cat.id.toString()}>
+                      {cat.name}
+                    </SelectItem>
+                    {categories
+                      .filter((subCat) => subCat.parent_id === cat.id)
+                      .map((subCat) => (
+                        <SelectItem key={subCat.id} value={subCat.id.toString()}>
+                          &nbsp;&nbsp;↳ {subCat.name}
+                        </SelectItem>
+                      ))}
+                  </React.Fragment>
+                ))}
             </SelectContent>
           </Select>
         </div>

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, CheckCircle2, Briefcase, Scale, Users, Home, FileText, Shield } from "lucide-react"
 import Link from "next/link"
+import type { Metadata } from "next"
+import Script from "next/script"
 import { notFound } from "next/navigation"
 
 const practiceAreasData = {
@@ -277,6 +279,38 @@ export default function PracticeAreaPage({ params }: { params: { slug: string } 
         </div>
       </section>
 
+      {/* SEO: Breadcrumbs */}
+      <Script
+        id="ld-json-breadcrumb-practice-area"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Home",
+                item: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Practice Areas",
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/practice-areas`,
+              },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: area.title,
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/practice-areas/${params.slug}`,
+              },
+            ],
+          }),
+        }}
+      />
+
       {/* Services Section */}
       <section className="py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
@@ -371,4 +405,35 @@ export default function PracticeAreaPage({ params }: { params: { slug: string } 
       <Footer />
     </div>
   )
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+): Promise<Metadata> {
+  const area = practiceAreasData[params.slug as keyof typeof practiceAreasData]
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+  const title = area ? area.title : "Practice Area"
+  const description = area?.description || "Explore our legal practice areas and services."
+  const url = `${base}/practice-areas/${params.slug}`
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      siteName: "Taş Hukuk",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  }
 }

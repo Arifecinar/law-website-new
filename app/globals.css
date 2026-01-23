@@ -130,41 +130,197 @@
   }
 }
 
-/* Hero animations */
+/* ========== ANIMATIONS ========== */
+
+/* Fade animations */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fade-in-down {
-  from { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 0; transform: translateY(-16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+@keyframes fade-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
 @keyframes kenburns-zoom {
   from { transform: scale(1); }
-  to { transform: scale(1.06); }
+  to { transform: scale(1.08); }
 }
 
+/* Scale animations */
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* Mobile menu animations */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(100%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-out-right {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(100%); }
+}
+@keyframes menu-item-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glow/pulse for CTA */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(122, 36, 32, 0.3); }
+  50% { box-shadow: 0 0 30px rgba(122, 36, 32, 0.5); }
+}
+
+/* Float animation for icons */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Animation classes */
 .animate-fade-in-up {
-  animation: fade-in-up 600ms ease-out both;
+  animation: fade-in-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .animate-fade-in-down {
-  animation: fade-in-down 600ms ease-out both;
+  animation: fade-in-down 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .animate-fade-in {
   animation: fade-in 700ms ease-out both;
 }
+.animate-fade-in-left {
+  animation: fade-in-left 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade-in-right {
+  animation: fade-in-right 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-scale-in {
+  animation: scale-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 .animate-kenburns {
-  animation: kenburns-zoom 18s ease-out forwards;
+  animation: kenburns-zoom 20s ease-out forwards;
+}
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+.animate-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
 }
 
+/* Mobile menu animation */
+.animate-menu-open {
+  animation: slide-in-right 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-menu-item {
+  animation: menu-item-fade 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered delays */
+.delay-75 { animation-delay: 75ms; }
 .delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
 .delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* Scroll reveal - initially hidden */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scroll-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.scroll-reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Card hover enhancements */
+.card-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), 
+              box-shadow 0.3s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Button hover effects */
+.btn-hover-scale {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-hover-scale:hover {
+  transform: scale(1.03);
+}
+.btn-hover-scale:active {
+  transform: scale(0.98);
+}
+
+/* Icon spin on hover */
+.icon-spin-hover {
+  transition: transform 0.3s ease;
+}
+.icon-spin-hover:hover {
+  transform: rotate(12deg);
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient-text {
+  background: linear-gradient(90deg, var(--accent), #c4453e, var(--accent));
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
+}
 
 /* WhatsApp button (global) */
 .wa-btn{

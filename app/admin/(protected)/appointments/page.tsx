@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Calendar, Clock, Mail, Phone, Trash } from "lucide-react"
+import { Calendar, Clock, Mail, Phone, Trash, CalendarPlus } from "lucide-react"
 import { getAppointments } from "@/lib/db/queries"
 import { DeleteAppointmentButton } from "@/components/admin/delete-appointment-button"
 
@@ -100,16 +100,37 @@ export default async function AdminAppointmentsPage() {
                       </a>
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar size={16} />
-                      <span>{new Date(appointment.preferred_datetime).toLocaleDateString()}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Clock size={16} />
+                      <Calendar size={16} className="text-accent" />
                       <span>
-                        {new Date(appointment.preferred_datetime).toLocaleTimeString([], {
+                        <strong>Randevu:</strong>{" "}
+                        {new Date(appointment.preferred_datetime).toLocaleDateString("tr-TR", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}{" "}
+                        -{" "}
+                        {new Date(appointment.preferred_datetime).toLocaleTimeString("tr-TR", {
                           hour: "2-digit",
                           minute: "2-digit",
                         })}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <CalendarPlus size={16} className="text-muted-foreground/60" />
+                      <span>
+                        <strong>Talep:</strong>{" "}
+                        {appointment.created_at
+                          ? new Date(appointment.created_at).toLocaleDateString("tr-TR", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            }) +
+                            " - " +
+                            new Date(appointment.created_at).toLocaleTimeString("tr-TR", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "-"}
                       </span>
                     </div>
                   </div>
