@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
 
-// Canonical domain - www yok, https var
+// Canonical domain for robots.txt
 const CANONICAL_BASE = "https://taslawfirm.com.tr"
 
 export default function robots(): MetadataRoute.Robots {
@@ -9,12 +9,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/", "/api/"],
-      },
-      {
-        userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/admin", "/admin/", "/api/"],
+        disallow: [
+          "/admin/",
+          "/api/admin/",
+          "/_next/",
+        ],
       },
     ],
     sitemap: `${CANONICAL_BASE}/sitemap.xml`,

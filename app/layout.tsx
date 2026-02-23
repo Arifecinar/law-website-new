@@ -2,9 +2,11 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
 import { Playfair_Display, Lora } from "next/font/google"
+import { headers } from "next/headers"
 import "./globals.css"
 import { FloatingContact } from "@/components/floating-contact"
 import { SITE_CONFIG } from "@/lib/constants"
+
 
 // Canonical domain - www yok, https var (SEO için kritik)
 const CANONICAL_BASE = "https://taslawfirm.com.tr"
@@ -62,7 +64,12 @@ export const metadata: Metadata = {
   ],
   // Canonical URL - SEO için kritik
   alternates: {
-    canonical: CANONICAL_BASE,
+    canonical: `${CANONICAL_BASE}/tr`,
+    languages: {
+      "tr": `${CANONICAL_BASE}/tr`,
+      "en": `${CANONICAL_BASE}/en`,
+      "x-default": `${CANONICAL_BASE}/tr`,
+    },
   },
   openGraph: {
     title: "Taş Hukuk & Danışmanlık",
@@ -97,13 +104,17 @@ export const viewport: Viewport = {
   themeColor: "#FFFFFF",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headersList = await headers()
+  const locale = headersList.get("x-locale") || "tr"
+
   return (
-    <html lang="tr">
+    <html lang={locale}>
+
       <body className={`${lora.variable} ${playfair.variable} font-sans antialiased`}>
         {children}
         <FloatingContact />
@@ -127,7 +138,9 @@ export default function RootLayout({
                 addressRegion: "İzmir",
                 addressCountry: "TR",
               },
-              sameAs: Object.values(SITE_CONFIG.socialMedia || {}),
+              ...(Object.values(SITE_CONFIG.socialMedia || {}).length > 0
+                ? { sameAs: Object.values(SITE_CONFIG.socialMedia) }
+                : {}),
               areaServed: "TR",
             }),
           }}
@@ -141,9 +154,10 @@ export default function RootLayout({
               "@type": "WebSite",
               name: SITE_CONFIG.title,
               url: CANONICAL_BASE,
+              inLanguage: ["tr", "en"],
               potentialAction: {
                 "@type": "SearchAction",
-                target: `${CANONICAL_BASE}/makaleler?q={search_term_string}`,
+                target: `${CANONICAL_BASE}/tr/makaleler?q={search_term_string}`,
                 "query-input": "required name=search_term_string",
               },
             }),

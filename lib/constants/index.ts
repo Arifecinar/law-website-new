@@ -6,14 +6,8 @@ export const SITE_CONFIG = {
   email: "av.kadir.tas@gmail.com",
   address: "Adalet Mah. Şehit Polis Fethi Sekin Cad. No.6 Ventus Tower, Bayraklı, İzmir 35530",
   addressShort: "İzmir",
-  // Sosyal medya hesaplarınızı buraya ekleyin (boş bırakırsanız footer'da görünmez)
-  // Örnek: facebook: "https://facebook.com/tashukuk"
-  socialMedia: {
-    facebook: "https://facebook.com",
-    instagram: "https://instagram.com",
-    linkedin: "https://linkedin.com",
-    twitter: "https://twitter.com",
-  },
+  // Sosyal medya hesapları (gerçek URL eklendiğinde footer'da ve structured data'da görünür)
+  socialMedia: {},
 } as const
 
 export const NAVIGATION_ITEMS = [
