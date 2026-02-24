@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, User } from "lucide-react"
+import { Menu, X, User, ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
@@ -12,7 +12,18 @@ const NAV_CONFIG = {
     home: { href: "/tr", label: "Anasayfa" },
     links: [
       { href: "/tr/hakkimizda", label: "Hakkımızda" },
-      { href: "/tr/calisma-alanlari", label: "Çalışma Alanları" },
+      {
+        href: "/tr/calisma-alanlari",
+        label: "Çalışma Alanları",
+        subLinks: [
+          { href: "/tr/calisma-alanlari/is-hukuku", label: "İş Hukuku" },
+          { href: "/tr/calisma-alanlari/ceza-hukuku", label: "Ceza Hukuku" },
+          { href: "/tr/calisma-alanlari/aile-hukuku", label: "Aile Hukuku" },
+          { href: "/tr/calisma-alanlari/gayrimenkul-hukuku", label: "Gayrimenkul Hukuku" },
+          { href: "/tr/calisma-alanlari/miras-hukuku", label: "Miras Hukuku" },
+          { href: "/tr/calisma-alanlari/ticaret-hukuku", label: "Ticaret Hukuku" },
+        ]
+      },
       { href: "/tr/makaleler", label: "Makaleler" },
       { href: "/tr/iletisim", label: "İletişim" },
     ],
@@ -24,7 +35,18 @@ const NAV_CONFIG = {
     home: { href: "/en", label: "Home" },
     links: [
       { href: "/en/about", label: "About" },
-      { href: "/en/practice-areas", label: "Practice Areas" },
+      {
+        href: "/en/practice-areas",
+        label: "Practice Areas",
+        subLinks: [
+          { href: "/en/practice-areas/corporate", label: "Corporate Law" },
+          { href: "/en/practice-areas/litigation", label: "Litigation" },
+          { href: "/en/practice-areas/employment", label: "Employment Law" },
+          { href: "/en/practice-areas/real-estate", label: "Real Estate" },
+          { href: "/en/practice-areas/intellectual-property", label: "Intellectual Property" },
+          { href: "/en/practice-areas/estate-planning", label: "Estate Planning" },
+        ]
+      },
       { href: "/en/articles", label: "Articles" },
       { href: "/en/contact", label: "Contact" },
     ],
@@ -36,12 +58,13 @@ const NAV_CONFIG = {
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileSubMenuOpen, setMobileSubMenuOpen] = useState<string | null>(null)
   const router = useRouter()
   const pathname = usePathname()
 
   // Detect locale from pathname
   const locale = pathname.startsWith("/en") ? "en" : "tr"
-  const nav = NAV_CONFIG[locale]
+  const nav = (NAV_CONFIG as any)[locale]
 
   const isActive = (href: string) => pathname === href || (href !== nav.home.href && pathname.startsWith(href))
 
@@ -90,17 +113,38 @@ export function Header() {
             >
               {nav.home.label}
             </Link>
-            {nav.links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${isActive(link.href)
-                  ? "text-foreground bg-secondary/60"
-                  : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
-                  }`}
-              >
-                {link.label}
-              </Link>
+            {nav.links.map((link: any) => (
+              <div key={link.href} className="relative group">
+                <Link
+                  href={link.href}
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-all flex items-center gap-1 ${isActive(link.href)
+                    ? "text-foreground bg-secondary/60"
+                    : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                    }`}
+                >
+                  {link.label}
+                  {link.subLinks && <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />}
+                </Link>
+
+                {link.subLinks && (
+                  <div className="absolute top-full left-0 w-64 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="bg-background border border-border rounded-lg shadow-xl overflow-hidden py-2 backdrop-blur-lg">
+                      {link.subLinks.map((sub: any) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className={`block px-4 py-2.5 text-sm transition-colors ${pathname === sub.href
+                            ? "text-accent bg-accent/5 font-medium"
+                            : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
+                            }`}
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -139,7 +183,7 @@ export function Header() {
 
         {/* Mobile Menu with animations */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-6 space-y-2 border-t border-border text-center animate-menu-open bg-background/98 backdrop-blur-lg">
+          <div className="lg:hidden py-6 space-y-2 border-t border-border animate-menu-open bg-background/98 backdrop-blur-lg overflow-y-auto max-h-[calc(100vh-80px)]">
             <Link
               href={nav.home.href}
               className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item delay-75 ${isActive(nav.home.href)
@@ -150,21 +194,53 @@ export function Header() {
             >
               {nav.home.label}
             </Link>
-            {nav.links.map((link, index) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center animate-menu-item ${index === 0 ? "delay-100" : index === 1 ? "delay-150" : index === 2 ? "delay-200" : "delay-300"
-                  } ${isActive(link.href)
-                    ? "text-foreground bg-secondary/60"
-                    : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
-                  }`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
+            {nav.links.map((link: any, index: number) => (
+              <div key={link.href} className="space-y-1">
+                <div className="flex items-center px-4">
+                  <Link
+                    href={link.href}
+                    className={`flex-1 py-3 px-4 text-base font-medium rounded-l-md transition-all text-center animate-menu-item ${index === 0 ? "delay-100" : index === 1 ? "delay-150" : index === 2 ? "delay-200" : "delay-300"
+                      } ${isActive(link.href)
+                        ? "text-foreground bg-secondary/60"
+                        : "text-foreground/70 hover:text-foreground hover:bg-secondary/50 active:scale-95"
+                      }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                  {link.subLinks && (
+                    <button
+                      onClick={() => setMobileSubMenuOpen(mobileSubMenuOpen === link.href ? null : link.href)}
+                      className="p-3 bg-secondary/30 rounded-r-md border-l border-border"
+                    >
+                      <ChevronDown
+                        size={20}
+                        className={`transition-transform duration-200 ${mobileSubMenuOpen === link.href ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  )}
+                </div>
+
+                {link.subLinks && mobileSubMenuOpen === link.href && (
+                  <div className="bg-secondary/20 mx-4 rounded-md py-1 animate-fade-in">
+                    {link.subLinks.map((sub: any) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        className={`block py-2.5 px-4 text-sm text-center transition-all ${pathname === sub.href
+                          ? "text-accent font-medium"
+                          : "text-foreground/70 hover:text-foreground"
+                          }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
-            <div className="pt-4 space-y-3 animate-menu-item delay-400">
+            <div className="pt-4 px-4 space-y-3 animate-menu-item delay-400">
               {/* Mobile Language Switcher */}
               <Link
                 href={switchHref}
