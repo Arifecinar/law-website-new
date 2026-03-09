@@ -45,6 +45,9 @@ export async function generateMetadata({
         "is-hukuku": "employment",
         "gayrimenkul-hukuku": "real-estate",
         "miras-hukuku": "estate-planning",
+        "aile-hukuku": "litigation",
+        "ceza-hukuku": "litigation",
+        "ticaret-hukuku": "corporate",
     }
     const enSlug = trToEnSlugMap[slug]
     const enUrl = enSlug

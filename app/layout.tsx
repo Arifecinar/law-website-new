@@ -62,15 +62,9 @@ export const metadata: Metadata = {
     "hukuk bürosu",
     "Kadir Taş",
   ],
-  // Canonical URL - SEO için kritik
-  alternates: {
-    canonical: `${CANONICAL_BASE}/tr`,
-    languages: {
-      "tr": `${CANONICAL_BASE}/tr`,
-      "en": `${CANONICAL_BASE}/en`,
-      "x-default": `${CANONICAL_BASE}/tr`,
-    },
-  },
+  // NOT: Canonical her sayfa kendi metadata'sında tanımlar.
+  // Root layout'ta global canonical TANIMLANMAMALI,
+  // aksi halde alt sayfalar override etmezse yanlış canonical gösterir.
   openGraph: {
     title: "Taş Hukuk & Danışmanlık",
     description:

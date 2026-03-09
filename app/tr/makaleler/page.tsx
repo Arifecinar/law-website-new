@@ -12,31 +12,53 @@ import type { Metadata } from "next"
 // Canonical domain - www yok, https var
 const CANONICAL_BASE = "https://taslawfirm.com.tr"
 
-export const metadata: Metadata = {
-  title: "Makaleler",
-  description:
-    "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
-  keywords: ["hukuk makaleleri", "hukuki bilgi", "avukat yazıları", "hukuk haberleri", "yasal mevzuat", "İzmir avukat"],
-  alternates: {
-    canonical: `${CANONICAL_BASE}/tr/makaleler`,
-    languages: {
-      "tr": `${CANONICAL_BASE}/tr/makaleler`,
-      "en": `${CANONICAL_BASE}/en/articles`,
-      "x-default": `${CANONICAL_BASE}/tr/makaleler`,
+// SEO: generateMetadata ile query string'li sayfalara noindex ekliyoruz
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; cat?: string }>
+}): Promise<Metadata> {
+  const sp = await searchParams
+  const hasFilter = !!(sp?.q || sp?.cat)
+
+  return {
+    title: "Makaleler",
+    description:
+      "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
+    keywords: ["hukuk makaleleri", "hukuki bilgi", "avukat yazıları", "hukuk haberleri", "yasal mevzuat", "İzmir avukat"],
+    alternates: {
+      canonical: `${CANONICAL_BASE}/tr/makaleler`,
+      languages: {
+        "tr": `${CANONICAL_BASE}/tr/makaleler`,
+        "en": `${CANONICAL_BASE}/en/articles`,
+        "x-default": `${CANONICAL_BASE}/tr/makaleler`,
+      },
     },
-  },
-  openGraph: {
-    type: "website",
-    title: "Makaleler",
-    description:
-      "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
-  },
-  twitter: {
-    card: "summary",
-    title: "Makaleler",
-    description:
-      "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
-  },
+    openGraph: {
+      type: "website",
+      title: "Makaleler",
+      description:
+        "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
+    },
+    twitter: {
+      card: "summary",
+      title: "Makaleler",
+      description:
+        "Hukuki konularda bilgilendirici makaleler: İş, Ceza, Aile, Gayrimenkul, Miras ve Ticaret Hukuku.",
+    },
+    // Filtreli/aramalı sayfalar: noindex, follow (duplicate content engelleme)
+    ...(hasFilter ? {
+      robots: {
+        index: false,
+        follow: true,
+      },
+    } : {
+      robots: {
+        index: true,
+        follow: true,
+      },
+    }),
+  }
 }
 
 // Fallback kategoriler - veritabanında kategori yoksa bunları göster

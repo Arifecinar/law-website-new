@@ -53,7 +53,15 @@ export async function middleware(request: NextRequest) {
     return handleAdminAuth(request, pathname)
   }
 
-  /* 3️⃣ ROOT → /tr (REWRITE, REDIRECT DEĞİL!) */
+  /* 3️⃣ ÇAPRAZ DİL REDIRECT'LERİ (SEO FIX) */
+  const crossLangRedirect = getCrossLanguageRedirect(pathname)
+  if (crossLangRedirect) {
+    const url = request.nextUrl.clone()
+    url.pathname = crossLangRedirect
+    return NextResponse.redirect(url, { status: 301 })
+  }
+
+  /* 4️⃣ ROOT → /tr (REWRITE, REDIRECT DEĞİL!) */
   if (pathname === "/") {
     const url = request.nextUrl.clone()
     url.pathname = "/tr"
@@ -63,7 +71,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  /* 4️⃣ LOCALE PATHS NORMAL DEVAM ETSİN */
+  /* 5️⃣ LOCALE PATHS NORMAL DEVAM ETSİN */
   if (pathname.startsWith("/tr") || pathname.startsWith("/en")) {
     const locale = pathname.startsWith("/en") ? "en" : "tr"
     const response = NextResponse.next()
@@ -71,7 +79,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  /* 5️⃣ LEGACY URL → DOĞRU DİL PREFIX */
+  /* 6️⃣ LEGACY URL → DOĞRU DİL PREFIX */
 
   const firstSegment = pathname.split("/")[1]
 
@@ -105,6 +113,51 @@ export async function middleware(request: NextRequest) {
   }
 
   return NextResponse.next()
+}
+
+/* -------------------------------------------------------------------------- */
+/* CROSS-LANGUAGE REDIRECT RULES (SEO)                                        */
+/* -------------------------------------------------------------------------- */
+
+function getCrossLanguageRedirect(pathname: string): string | null {
+  // EN path'te Türkçe slug kullanımı → doğru EN path'e yönlendir
+  if (pathname.startsWith("/en/makaleler")) {
+    return pathname.replace("/en/makaleler", "/en/articles")
+  }
+  if (pathname.startsWith("/en/hakkimizda")) {
+    return "/en/about"
+  }
+  if (pathname.startsWith("/en/iletisim")) {
+    return "/en/contact"
+  }
+  if (pathname.startsWith("/en/calisma-alanlari")) {
+    return pathname.replace("/en/calisma-alanlari", "/en/practice-areas")
+  }
+  if (pathname.startsWith("/en/online-randevu")) {
+    return "/en/appointment"
+  }
+  if (pathname.startsWith("/en/av-kadir-tas")) {
+    return "/en/about"
+  }
+
+  // TR path'te İngilizce slug kullanımı → doğru TR path'e yönlendir
+  if (pathname.startsWith("/tr/articles")) {
+    return pathname.replace("/tr/articles", "/tr/makaleler")
+  }
+  if (pathname.startsWith("/tr/about")) {
+    return "/tr/hakkimizda"
+  }
+  if (pathname.startsWith("/tr/contact")) {
+    return "/tr/iletisim"
+  }
+  if (pathname.startsWith("/tr/practice-areas")) {
+    return pathname.replace("/tr/practice-areas", "/tr/calisma-alanlari")
+  }
+  if (pathname.startsWith("/tr/appointment")) {
+    return "/tr/online-randevu"
+  }
+
+  return null
 }
 
 /* -------------------------------------------------------------------------- */
