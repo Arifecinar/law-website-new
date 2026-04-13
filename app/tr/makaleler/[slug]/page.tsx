@@ -240,11 +240,6 @@ export async function generateMetadata(
       description: SITE_CONFIG.description,
       alternates: {
         canonical: `${base}/tr/makaleler/${slug}`,
-        languages: {
-          "tr": `${base}/tr/makaleler/${slug}`,
-          "en": `${base}/en/articles/${slug}`,
-          "x-default": `${base}/tr/makaleler/${slug}`,
-        },
       },
     }
   }
@@ -260,11 +255,6 @@ export async function generateMetadata(
     description,
     alternates: {
       canonical: url,
-      languages: {
-        "tr": `${base}/tr/makaleler/${article.slug}`,
-        "en": `${base}/en/articles/${article.slug}`,
-        "x-default": `${base}/tr/makaleler/${article.slug}`,
-      },
     },
     openGraph: {
       type: "article",

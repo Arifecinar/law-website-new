@@ -41,7 +41,15 @@ function isSystemPath(pathname: string): boolean {
 /* -------------------------------------------------------------------------- */
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
+  const { pathname, searchParams } = request.nextUrl
+
+  /* YENİ: ESKİ WORDPRESS KALINTILARINI YUT (#1 SEO FIX) */
+  if (searchParams.has("cat")) {
+    const url = request.nextUrl.clone()
+    url.searchParams.delete("cat")
+    url.pathname = "/tr/makaleler"
+    return NextResponse.redirect(url, { status: 301 })
+  }
 
   /* 1️⃣ STATIC FILES VE API'YE DOKUNMA */
   if (isStaticAsset(pathname) || isSystemPath(pathname)) {

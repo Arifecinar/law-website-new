@@ -132,13 +132,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ──────────────────────────────────────────────────────────────────────
   // DYNAMIC: English Articles (/en/articles/[slug])
+  // DÜZELTME: Veritabanında dil ayrımı olmadığı için,
+  // var olan Türkçe makalelerin İngilizce alt klasöre URL üretmesini KESİYORUZ.
   // ──────────────────────────────────────────────────────────────────────
-  const enArticles = articles.map<MetadataRoute.Sitemap[number]>((a: any) => ({
-    url: `${CANONICAL_BASE}/en/articles/${a.slug}`,
-    lastModified: a.updated_at || a.published_at || a.created_at || now,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }))
+  const enArticles: MetadataRoute.Sitemap = []
 
   // ──────────────────────────────────────────────────────────────────────
   // STATIC: Turkish Practice Area Detail Pages (/tr/calisma-alanlari/[slug])
