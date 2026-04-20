@@ -109,6 +109,19 @@ const nextConfig = {
         destination: '/tr/online-randevu',
         permanent: true,
       },
+      // ───────── DEAD URLS (404) ─────────
+      // /en/legal-notice → /en (sayfa hiç oluşturulmamış)
+      {
+        source: '/en/legal-notice',
+        destination: '/en',
+        permanent: true,
+      },
+      // Trailing slash varyantları (Google'ın keşfettiği URL'ler)
+      {
+        source: '/en/legal-notice/',
+        destination: '/en',
+        permanent: true,
+      },
     ]
   },
 }

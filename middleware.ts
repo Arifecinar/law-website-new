@@ -43,6 +43,14 @@ function isSystemPath(pathname: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
+  // 0️⃣ WWW → NON-WWW 301 YÖNLENDİRME (Domain Standardizasyonu)
+  const hostname = request.headers.get('host') || ''
+  if (hostname.startsWith('www.')) {
+    const url = request.nextUrl.clone()
+    url.hostname = hostname.replace('www.', '')
+    return NextResponse.redirect(url, { status: 301 })
+  }
+
   /* YENİ: ESKİ WORDPRESS KALINTILARINI YUT (#1 SEO FIX) */
   if (searchParams.has("cat")) {
     const url = request.nextUrl.clone()
@@ -69,14 +77,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, { status: 301 })
   }
 
-  /* 4️⃣ ROOT → /tr (REWRITE, REDIRECT DEĞİL!) */
+  /* 4️⃣ ROOT → /tr (301 REDIRECT — Google canonical için şart) */
   if (pathname === "/") {
     const url = request.nextUrl.clone()
     url.pathname = "/tr"
-
-    const response = NextResponse.rewrite(url)
-    response.headers.set("x-locale", "tr")
-    return response
+    return NextResponse.redirect(url, { status: 301 })
   }
 
   /* 5️⃣ LOCALE PATHS NORMAL DEVAM ETSİN */
@@ -117,6 +122,14 @@ export async function middleware(request: NextRequest) {
   if (knownEnSlugs.includes(firstSegment)) {
     const url = request.nextUrl.clone()
     url.pathname = `/en${pathname}`
+    return NextResponse.redirect(url, { status: 301 })
+  }
+
+  /* 7️⃣ FALLBACK: Locale eki olmayan bilinmeyen URL'ler → /tr'ye yönlendir */
+  const pathnameIsMissingLocale = !pathname.startsWith('/tr') && !pathname.startsWith('/en')
+  if (pathnameIsMissingLocale && !pathname.includes('.')) {
+    const url = request.nextUrl.clone()
+    url.pathname = `/tr${pathname}`
     return NextResponse.redirect(url, { status: 301 })
   }
 
