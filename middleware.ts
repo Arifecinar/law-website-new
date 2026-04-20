@@ -43,13 +43,7 @@ function isSystemPath(pathname: string): boolean {
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
 
-  // 0️⃣ WWW → NON-WWW 301 YÖNLENDİRME (Domain Standardizasyonu)
-  const hostname = request.headers.get('host') || ''
-  if (hostname.startsWith('www.')) {
-    const url = request.nextUrl.clone()
-    url.hostname = hostname.replace('www.', '')
-    return NextResponse.redirect(url, { status: 301 })
-  }
+
 
   /* YENİ: ESKİ WORDPRESS KALINTILARINI YUT (#1 SEO FIX) */
   if (searchParams.has("cat")) {
