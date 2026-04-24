@@ -5,8 +5,8 @@ import { Award, Target, Users, Scale } from "lucide-react"
 import Image from "next/image"
 import type { Metadata } from "next"
 
-// Canonical domain - www yok, https var
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "Hakkımızda",

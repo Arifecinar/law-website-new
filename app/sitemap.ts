@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next"
 import { getArticles } from "@/lib/db/queries"
 
-// Canonical domain - www yok, https var
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO: Google Search Console ile tutarlı)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 // EN Practice Areas - STATİK slug'lar (veritabanından DEĞİL!)
 // Header'daki ve generateStaticParams'taki slug'larla birebir eşleşmeli

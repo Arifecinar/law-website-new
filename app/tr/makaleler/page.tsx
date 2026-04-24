@@ -9,8 +9,8 @@ import Image from "next/image"
 import { getArticles, getCategories } from "@/lib/db/queries"
 import type { Metadata } from "next"
 
-// Canonical domain - www yok, https var
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 // SEO: generateMetadata ile query string'li sayfalara noindex ekliyoruz
 export async function generateMetadata({

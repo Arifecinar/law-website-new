@@ -14,11 +14,11 @@ export const metadata: Metadata = {
   description:
     "Legal insights and practical guidance from experienced attorneys across corporate, litigation, employment and more.",
   alternates: {
-    canonical: "https://taslawfirm.com.tr/en/articles",
+    canonical: "https://www.taslawfirm.com.tr/en/articles",
     languages: {
-      "en": "https://taslawfirm.com.tr/en/articles",
-      "tr": "https://taslawfirm.com.tr/tr/makaleler",
-      "x-default": "https://taslawfirm.com.tr/tr/makaleler",
+      "en": "https://www.taslawfirm.com.tr/en/articles",
+      "tr": "https://www.taslawfirm.com.tr/tr/makaleler",
+      "x-default": "https://www.taslawfirm.com.tr/tr/makaleler",
     },
   },
   openGraph: {

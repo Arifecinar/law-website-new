@@ -99,7 +99,7 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
               },
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/tr/makaleler/${article.slug}`,
+                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/tr/makaleler/${article.slug}`,
               },
             }),
           }}
@@ -116,19 +116,19 @@ export default async function MakaleDetayPage({ params }: { params: Promise<{ sl
                   "@type": "ListItem",
                   position: 1,
                   name: "Ana Sayfa",
-                  item: process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr",
+                  item: process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr",
                 },
                 {
                   "@type": "ListItem",
                   position: 2,
                   name: "Makaleler",
-                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/tr/makaleler`,
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/tr/makaleler`,
                 },
                 {
                   "@type": "ListItem",
                   position: 3,
                   name: article.title,
-                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/tr/makaleler/${article.slug}`,
+                  item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/tr/makaleler/${article.slug}`,
                 },
               ],
             }),
@@ -233,7 +233,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const article = await getArticleBySlug(slug)
-  const base = "https://taslawfirm.com.tr"
+  const base = "https://www.taslawfirm.com.tr"
   if (!article) {
     return {
       title: "Makale",

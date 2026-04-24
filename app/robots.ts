@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 
-// Canonical domain for robots.txt
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain for robots.txt (www + https)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export default function robots(): MetadataRoute.Robots {
   return {

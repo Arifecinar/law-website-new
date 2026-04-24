@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     "hukuki hizmetler",
   ],
   alternates: {
-    canonical: "https://taslawfirm.com.tr/tr/calisma-alanlari",
+    canonical: "https://www.taslawfirm.com.tr/tr/calisma-alanlari",
     languages: {
-      "tr": "https://taslawfirm.com.tr/tr/calisma-alanlari",
-      "en": "https://taslawfirm.com.tr/en/practice-areas",
-      "x-default": "https://taslawfirm.com.tr/tr/calisma-alanlari",
+      "tr": "https://www.taslawfirm.com.tr/tr/calisma-alanlari",
+      "en": "https://www.taslawfirm.com.tr/en/practice-areas",
+      "x-default": "https://www.taslawfirm.com.tr/tr/calisma-alanlari",
     },
   },
   openGraph: {

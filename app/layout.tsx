@@ -8,8 +8,8 @@ import { FloatingContact } from "@/components/floating-contact"
 import { SITE_CONFIG } from "@/lib/constants"
 
 
-// Canonical domain - www yok, https var (SEO için kritik)
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO: Google Search Console ile tutarlı)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 const siteUrl = CANONICAL_BASE
 
 const verificationMeta: Metadata["verification"] = {

@@ -42,6 +42,18 @@ function isSystemPath(pathname: string): boolean {
 
 export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
+  const host = request.headers.get("host") || ""
+
+  /* 0️⃣ WWW REDIRECT — non-www → www (SEO canonical tutarlılığı) */
+  if (
+    host === "taslawfirm.com.tr" &&
+    !host.startsWith("localhost")
+  ) {
+    const url = request.nextUrl.clone()
+    url.host = "www.taslawfirm.com.tr"
+    url.port = ""
+    return NextResponse.redirect(url, { status: 301 })
+  }
 
 
 

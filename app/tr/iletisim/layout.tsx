@@ -3,8 +3,8 @@ import type { Metadata } from "next"
 import Script from "next/script"
 import { SITE_CONFIG } from "@/lib/constants"
 
-// Canonical domain - www yok, https var
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "İletişim",

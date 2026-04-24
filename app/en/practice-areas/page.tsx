@@ -11,11 +11,11 @@ export const metadata: Metadata = {
   description:
     "Explore our core practice areas and services: Corporate, Litigation, Employment, IP, Real Estate, Estate Planning.",
   alternates: {
-    canonical: "https://taslawfirm.com.tr/en/practice-areas",
+    canonical: "https://www.taslawfirm.com.tr/en/practice-areas",
     languages: {
-      "en": "https://taslawfirm.com.tr/en/practice-areas",
-      "tr": "https://taslawfirm.com.tr/tr/calisma-alanlari",
-      "x-default": "https://taslawfirm.com.tr/tr/calisma-alanlari",
+      "en": "https://www.taslawfirm.com.tr/en/practice-areas",
+      "tr": "https://www.taslawfirm.com.tr/tr/calisma-alanlari",
+      "x-default": "https://www.taslawfirm.com.tr/tr/calisma-alanlari",
     },
   },
   openGraph: {

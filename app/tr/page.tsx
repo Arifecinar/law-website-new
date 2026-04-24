@@ -27,11 +27,11 @@ export const metadata: Metadata = {
     "ticaret hukuku",
   ],
   alternates: {
-    canonical: "https://taslawfirm.com.tr/tr",
+    canonical: "https://www.taslawfirm.com.tr/tr",
     languages: {
-      "tr": "https://taslawfirm.com.tr/tr",
-      "en": "https://taslawfirm.com.tr/en",
-      "x-default": "https://taslawfirm.com.tr/tr",
+      "tr": "https://www.taslawfirm.com.tr/tr",
+      "en": "https://www.taslawfirm.com.tr/en",
+      "x-default": "https://www.taslawfirm.com.tr/tr",
     },
   },
   openGraph: {

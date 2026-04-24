@@ -7,7 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Metadata } from "next"
 
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "About Us",

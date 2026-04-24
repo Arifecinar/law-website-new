@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle } from "lucide-react"
 import type { Metadata } from "next"
 
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "Appointment",

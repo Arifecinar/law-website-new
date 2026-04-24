@@ -5,7 +5,7 @@ import { Briefcase } from "lucide-react"
 import Image from "next/image"
 import type { Metadata } from "next"
 
-const siteUrl = "https://taslawfirm.com.tr"
+const siteUrl = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "Av. Kadir Taş",

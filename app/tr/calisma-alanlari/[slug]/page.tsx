@@ -18,7 +18,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { PRACTICE_AREAS_TR, ALL_SLUGS } from "@/data/practice-areas-tr"
 
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 // ── Static Params ────────────────────────────────────────────────────────────
 export async function generateStaticParams() {

@@ -293,19 +293,19 @@ export default async function PracticeAreaPage({ params }: { params: Promise<{ s
                 "@type": "ListItem",
                 position: 1,
                 name: "Home",
-                item: process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr",
+                item: process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "Practice Areas",
-                item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/en/practice-areas`,
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/en/practice-areas`,
               },
               {
                 "@type": "ListItem",
                 position: 3,
                 name: area.title,
-                item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/en/practice-areas/${slug}`,
+                item: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/en/practice-areas/${slug}`,
               },
             ],
           }),
@@ -420,7 +420,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const area = practiceAreasData[slug as keyof typeof practiceAreasData]
-  const base = "https://taslawfirm.com.tr"
+  const base = "https://www.taslawfirm.com.tr"
   const title = area ? area.title : "Practice Area"
   const description = area?.description || "Explore our legal practice areas and services."
   const url = `${base}/en/practice-areas/${slug}`

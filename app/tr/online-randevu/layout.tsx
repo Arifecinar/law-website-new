@@ -1,8 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 
-// Canonical domain - www yok, https var
-const CANONICAL_BASE = "https://taslawfirm.com.tr"
+// Canonical domain - www + https (SEO)
+const CANONICAL_BASE = "https://www.taslawfirm.com.tr"
 
 export const metadata: Metadata = {
   title: "Online Randevu",

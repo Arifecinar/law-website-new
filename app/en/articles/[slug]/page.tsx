@@ -130,7 +130,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               },
               mainEntityOfPage: {
                 "@type": "WebPage",
-                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://taslawfirm.com.tr"}/en/articles/${article.slug}`,
+                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.taslawfirm.com.tr"}/en/articles/${article.slug}`,
               },
             }),
           }}
@@ -183,7 +183,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const article = await getArticleBySlug(slug)
-  const base = "https://taslawfirm.com.tr"
+  const base = "https://www.taslawfirm.com.tr"
   if (!article) {
     return {
       title: "Article",
