@@ -122,6 +122,44 @@ const nextConfig = {
         destination: '/en',
         permanent: true,
       },
+      // Non-www legal-notice variants
+      {
+        source: '/legal-notice',
+        destination: '/en',
+        permanent: true,
+      },
+    ]
+  },
+
+  // ──────────────────────────────────────────────────────────────────────
+  // SEO HEADERS — Google'ın indexlemesini kolaylaştır
+  // ──────────────────────────────────────────────────────────────────────
+  async headers() {
+    return [
+      {
+        // Tüm public sayfalar indexlenebilir
+        source: '/(tr|en)/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+      {
+        // Admin ve API sayfaları indexlenmemeli
+        source: '/(admin|api)/:path*',
+        headers: [
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
     ]
   },
 }

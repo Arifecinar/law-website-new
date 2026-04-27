@@ -83,6 +83,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, { status: 301 })
   }
 
+  /* 3.5️⃣ TRAILING SLASH NORMALIZATION — /foo/ → /foo (301) */
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    const url = request.nextUrl.clone()
+    url.pathname = pathname.replace(/\/+$/, "")
+    return NextResponse.redirect(url, { status: 301 })
+  }
+
   /* 4️⃣ ROOT → /tr (301 REDIRECT — Google canonical için şart) */
   if (pathname === "/") {
     const url = request.nextUrl.clone()
@@ -147,6 +154,11 @@ export async function middleware(request: NextRequest) {
 /* -------------------------------------------------------------------------- */
 
 function getCrossLanguageRedirect(pathname: string): string | null {
+  // DEAD PAGES — hiç oluşturulmamış sayfalar → ana sayfaya yönlendir
+  if (pathname === "/en/legal-notice" || pathname === "/tr/legal-notice") {
+    return pathname.startsWith("/en") ? "/en" : "/tr"
+  }
+
   // EN path'te Türkçe slug kullanımı → doğru EN path'e yönlendir
   if (pathname.startsWith("/en/makaleler")) {
     return pathname.replace("/en/makaleler", "/en/articles")

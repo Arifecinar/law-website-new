@@ -7,11 +7,22 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: [
+          "/admin/",
+          "/api/",
+          "/_next/",
+          "/tr/makaleler?*",
+          "/en/articles?*",
+        ],
+      },
+      {
         userAgent: "*",
         allow: "/",
         disallow: [
           "/admin/",
-          "/api/admin/",
+          "/api/",
           "/_next/",
           "/tr/makaleler?*",
           "/en/articles?*",
