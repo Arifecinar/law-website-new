@@ -412,7 +412,8 @@ const enToTrSlugMap: Record<string, string> = {
   employment: "is-hukuku",
   "real-estate": "gayrimenkul-hukuku",
   "estate-planning": "miras-hukuku",
-  // corporate, litigation, intellectual-property → no direct TR detail page
+  corporate: "ticaret-hukuku",
+  litigation: "ceza-hukuku",
 }
 
 export async function generateMetadata(

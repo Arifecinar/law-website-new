@@ -7,7 +7,7 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Metadata } from "next"
 import Script from "next/script"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { getArticleBySlug, getArticles } from "@/lib/db/queries"
 import { SITE_CONFIG } from "@/lib/constants"
 
@@ -21,9 +21,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     notFound()
   }
 
+  // SEO Fix: Eğer makale Türkçe ise (veya veritabanında tüm makaleler TR ise), doğrudan /tr/makaleler/[slug] sayfasına kalıcı yönlendir
+  if (!article.language || article.language === "tr") {
+    permanentRedirect(`/tr/makaleler/${slug}`)
+  }
+
   // Related articles for internal linking (SEO)
   const related = (await getArticles())
-    .filter((a: any) => a.published !== false && a.slug !== slug)
+    .filter((a: any) => a.published !== false && a.slug !== slug && a.language === "en")
     .slice(0, 3)
 
   return (
@@ -195,7 +200,10 @@ export async function generateMetadata(
   }
   const title = article.title
   const description = article.excerpt || SITE_CONFIG.description
-  const url = `${base}/en/articles/${article.slug}`
+  const isTr = !article.language || article.language === "tr"
+  const url = isTr
+    ? `${base}/tr/makaleler/${article.slug}`
+    : `${base}/en/articles/${article.slug}`
   const image = article.image_url || "/placeholder.jpg"
   const published = article.published_at || article.created_at
   const author = article.author || SITE_CONFIG.name

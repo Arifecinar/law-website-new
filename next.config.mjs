@@ -15,7 +15,7 @@ const nextConfig = {
     ],
   },
 
-  // Trailing slash tutarlılığı için (SEO)
+  // Trailing slash kapalılığı: Next.js App Router standart yapılandırması (middleware ile çakışmayı önler)
   trailingSlash: false,
 
   // ──────────────────────────────────────────────────────────────────────
