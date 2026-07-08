@@ -33,6 +33,8 @@ export const metadata: Metadata = {
     description:
       "Legal insights and practical guidance from experienced attorneys across corporate, litigation, employment and more.",
   },
+}
+
 export default async function ArticlesPage() {
   const allArticles = await getArticles()
   const articles = allArticles.filter((a: any) => a.language === "en")
