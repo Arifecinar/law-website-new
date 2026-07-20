@@ -12,7 +12,7 @@ export const SITE_CONFIG = {
 
 export const NAVIGATION_ITEMS = [
   { label: "Hakkımızda", href: "/hakkimizda" },
-  { label: "Av. Kadir Taş", href: "/av-kadir-tas" },
+
   { label: "Çalışma Alanları", href: "/calisma-alanlari" },
   { label: "Makaleler", href: "/makaleler" },
   { label: "İletişim", href: "/iletisim" },

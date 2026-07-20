@@ -64,7 +64,7 @@ export function Header() {
             </Link>
             <Link
               href="/tr/calisma-alanlari"
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${isActive("/tr/av-kadir-tas")
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${isActive("/tr/calisma-alanlari")
                 ? "text-foreground bg-secondary/60"
                 : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
                 }`}
@@ -136,16 +136,16 @@ export function Header() {
               Hakkımızda
             </Link>
             <Link
-              href="/tr/av-kadir-tas"
-              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${isActive("/tr/av-kadir-tas")
+              href="/tr/calisma-alanlari"
+              className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${isActive("/tr/calisma-alanlari")
                 ? "text-foreground bg-secondary/60"
                 : "text-foreground/70 hover:text-foreground hover:bg-secondary/50"
                 }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-
               Çalışma Alanları
             </Link>
+
             <Link
               href="/tr/makaleler"
               className={`block py-3 px-4 text-base font-medium rounded-md transition-all text-center ${isActive("/tr/makaleler")

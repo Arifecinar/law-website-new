@@ -97,12 +97,7 @@ const nextConfig = {
         destination: '/tr/calisma-alanlari',
         permanent: true,
       },
-      // Legacy /av-kadir-tas → /tr/av-kadir-tas
-      {
-        source: '/av-kadir-tas',
-        destination: '/tr/av-kadir-tas',
-        permanent: true,
-      },
+
       // Legacy /online-randevu → /tr/online-randevu
       {
         source: '/online-randevu',

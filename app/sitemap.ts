@@ -44,12 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "monthly",
         priority: 0.8,
       },
-      {
-        url: `${CANONICAL_BASE}/tr/av-kadir-tas`,
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.8,
-      },
+
       {
         url: `${CANONICAL_BASE}/tr/calisma-alanlari`,
         lastModified: now,

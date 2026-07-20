@@ -114,7 +114,6 @@ export async function middleware(request: NextRequest) {
     "iletisim",
     "makaleler",
     "calisma-alanlari",
-    "av-kadir-tas",
     "online-randevu"
   ]
 
@@ -175,9 +174,7 @@ function getCrossLanguageRedirect(pathname: string): string | null {
   if (pathname.startsWith("/en/online-randevu")) {
     return "/en/appointment"
   }
-  if (pathname.startsWith("/en/av-kadir-tas")) {
-    return "/en/about"
-  }
+
 
   // TR path'te İngilizce slug kullanımı → doğru TR path'e yönlendir
   if (pathname.startsWith("/tr/articles")) {

@@ -78,7 +78,6 @@ export function Header() {
       .replace("/makaleler", "/articles")
       .replace("/calisma-alanlari", "/practice-areas")
       .replace("/online-randevu", "/appointment")
-      .replace("/av-kadir-tas", "/about")
     : pathname.replace(/^\/en/, "/tr")
       .replace("/about", "/hakkimizda")
       .replace("/contact", "/iletisim")
