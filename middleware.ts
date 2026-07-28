@@ -158,6 +158,11 @@ function getCrossLanguageRedirect(pathname: string): string | null {
     return pathname.startsWith("/en") ? "/en" : "/tr"
   }
 
+  // Eski /av-kadir-tas URL'i → /tr/hakkimizda
+  if (pathname === "/av-kadir-tas" || pathname === "/tr/av-kadir-tas") {
+    return "/tr/hakkimizda"
+  }
+
   // EN path'te Türkçe slug kullanımı → doğru EN path'e yönlendir
   if (pathname.startsWith("/en/makaleler")) {
     return pathname.replace("/en/makaleler", "/en/articles")

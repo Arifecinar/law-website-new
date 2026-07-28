@@ -27,6 +27,8 @@ const TR_CALISMA_ALANI_SLUGS = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
+  // Statik sayfalar için sabit tarih — build her çalıştığında tarih değişmesin
+  const staticDate = new Date("2026-07-20T11:22:55.627Z")
 
   // ──────────────────────────────────────────────────────────────────────
   // TURKISH PAGES (/tr/...)
@@ -34,38 +36,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const trStaticPages: MetadataRoute.Sitemap = [
       {
         url: `${CANONICAL_BASE}/tr`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "weekly",
         priority: 1.0,
       },
       {
         url: `${CANONICAL_BASE}/tr/hakkimizda`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.8,
       },
 
       {
         url: `${CANONICAL_BASE}/tr/calisma-alanlari`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.9,
       },
       {
         url: `${CANONICAL_BASE}/tr/makaleler`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "weekly",
         priority: 0.9,
       },
       {
         url: `${CANONICAL_BASE}/tr/iletisim`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.7,
       },
       {
         url: `${CANONICAL_BASE}/tr/online-randevu`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.7,
       },
@@ -77,37 +79,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const enStaticPages: MetadataRoute.Sitemap = [
       {
         url: `${CANONICAL_BASE}/en`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "weekly",
         priority: 0.9,
       },
       {
         url: `${CANONICAL_BASE}/en/about`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.7,
       },
       {
         url: `${CANONICAL_BASE}/en/practice-areas`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.8,
       },
       {
         url: `${CANONICAL_BASE}/en/articles`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "weekly",
         priority: 0.8,
       },
       {
         url: `${CANONICAL_BASE}/en/contact`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.6,
       },
       {
         url: `${CANONICAL_BASE}/en/appointment`,
-        lastModified: now,
+        lastModified: staticDate,
         changeFrequency: "monthly",
         priority: 0.6,
       },
@@ -144,7 +146,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ──────────────────────────────────────────────────────────────────────
   const trPracticeAreas = TR_CALISMA_ALANI_SLUGS.map<MetadataRoute.Sitemap[number]>((slug) => ({
     url: `${CANONICAL_BASE}/tr/calisma-alanlari/${slug}`,
-    lastModified: now,
+    lastModified: staticDate,
     changeFrequency: "monthly",
     priority: 0.9,
   }))
@@ -154,7 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ──────────────────────────────────────────────────────────────────────
   const enPracticeAreas = EN_PRACTICE_AREA_SLUGS.map<MetadataRoute.Sitemap[number]>((slug) => ({
     url: `${CANONICAL_BASE}/en/practice-areas/${slug}`,
-    lastModified: now,
+    lastModified: staticDate,
     changeFrequency: "monthly",
     priority: 0.8,
   }))

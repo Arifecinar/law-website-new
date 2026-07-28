@@ -104,23 +104,33 @@ const nextConfig = {
         destination: '/tr/online-randevu',
         permanent: true,
       },
-      // ───────── DEAD URLS (404) ─────────
-      // /en/legal-notice → /en (sayfa hiç oluşturulmamış)
+      // ───────── DEAD URLS (404) → Ana sayfaya yönlendir ─────────
+      // /en/legal-notice → /en (sayfa hiç oluşturulmamış, middleware da handle ediyor)
       {
         source: '/en/legal-notice',
         destination: '/en',
         permanent: true,
       },
-      // Trailing slash varyantları (Google'ın keşfettiği URL'ler)
       {
         source: '/en/legal-notice/',
         destination: '/en',
         permanent: true,
       },
-      // Non-www legal-notice variants
       {
         source: '/legal-notice',
         destination: '/en',
+        permanent: true,
+      },
+      // /av-kadir-tas → /tr/hakkimizda (eski URL, 404 önlemek için)
+      {
+        source: '/av-kadir-tas',
+        destination: '/tr/hakkimizda',
+        permanent: true,
+      },
+      // /tr/av-kadir-tas → /tr/hakkimizda
+      {
+        source: '/tr/av-kadir-tas',
+        destination: '/tr/hakkimizda',
         permanent: true,
       },
     ]
