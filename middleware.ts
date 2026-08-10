@@ -44,14 +44,19 @@ export async function middleware(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl
   const host = request.headers.get("host") || ""
 
-  /* 0️⃣ WWW REDIRECT — non-www → www (SEO canonical tutarlılığı) */
-  if (
-    host === "taslawfirm.com.tr" &&
-    !host.startsWith("localhost")
-  ) {
+  /* 0️⃣ WWW + TRAILING SLASH — tek geçişte normalize (redirect zincirini önler) */
+  const isNonWww = host === "taslawfirm.com.tr" && !host.startsWith("localhost")
+  const hasTrailingSlash = pathname !== "/" && pathname.endsWith("/")
+
+  if (isNonWww || hasTrailingSlash) {
     const url = request.nextUrl.clone()
-    url.host = "www.taslawfirm.com.tr"
-    url.port = ""
+    if (isNonWww) {
+      url.host = "www.taslawfirm.com.tr"
+      url.port = ""
+    }
+    if (hasTrailingSlash) {
+      url.pathname = pathname.replace(/\/+$/, "")
+    }
     return NextResponse.redirect(url, { status: 301 })
   }
 
@@ -83,12 +88,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, { status: 301 })
   }
 
-  /* 3.5️⃣ TRAILING SLASH NORMALIZATION — /foo/ → /foo (301) */
-  if (pathname !== "/" && pathname.endsWith("/")) {
-    const url = request.nextUrl.clone()
-    url.pathname = pathname.replace(/\/+$/, "")
-    return NextResponse.redirect(url, { status: 301 })
-  }
 
   /* 4️⃣ ROOT → /tr (301 REDIRECT — Google canonical için şart) */
   if (pathname === "/") {
